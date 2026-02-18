@@ -26,7 +26,7 @@ PROMPT=$(cat "$PROMPT_FILE")
 # Gemini CLI 実行（非対話・YOLO モード）
 echo "Gemini CLI でデータ更新中..." | tee -a "$LOG_FILE"
 "$GEMINI_BIN" \
-  -m gemini-2.5-pro \
+  -m gemini-3-flash-preview \
   -p "$PROMPT" \
   -y \
   2>&1 | tee -a "$LOG_FILE"
