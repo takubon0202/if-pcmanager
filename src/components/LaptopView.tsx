@@ -51,25 +51,40 @@ export function LaptopView() {
   };
 
   const findRecommendations = () => {
+    const effectiveMin = Math.min(budget.min, budget.max);
+    const effectiveMax = Math.max(budget.min, budget.max);
+
     const results = LAPTOP_DATABASE.filter((laptop) => {
-      if (laptop.price < budget.min || laptop.price > budget.max) return false;
+      if (laptop.price < effectiveMin || laptop.price > effectiveMax) return false;
       return true;
     })
       .map((laptop) => {
         let matchScore = 0;
+        const gpuIsIntegrated = laptop.specs.gpu === "内蔵" || laptop.specs.gpu.startsWith("内蔵");
+
         selectedPurposes.forEach((purpose) => {
-          if (purpose === "gaming" && laptop.specs.gpu !== "内蔵") matchScore += 20;
+          if (purpose === "gaming" && !gpuIsIntegrated) matchScore += 20;
           if (purpose === "programming" && parseInt(laptop.specs.memory) >= 16) matchScore += 15;
           if (purpose === "design" && laptop.specs.display.includes("有機EL")) matchScore += 15;
           if (purpose === "office") matchScore += 10;
           if (purpose === "web") matchScore += 10;
           if (purpose === "ai" && (laptop.specs.gpu.includes("RTX") || laptop.specs.cpu.includes("M4"))) matchScore += 20;
         });
+
+        // サイズフィルタリング
+        if (size && size !== "any") {
+          const displaySize = parseFloat(laptop.specs.display);
+          if (size === "13" && displaySize <= 13.9) matchScore += 10;
+          if (size === "14-15" && displaySize >= 14 && displaySize <= 15.9) matchScore += 10;
+          if (size === "16+" && displaySize >= 16) matchScore += 10;
+        }
+
         selectedPriorities.forEach((priority) => {
           if (priority === "portable" && parseFloat(laptop.specs.weight) < 1.5) matchScore += 15;
           if (priority === "battery" && parseInt(laptop.specs.battery) >= 10) matchScore += 15;
           if (priority === "cost" && laptop.price < 150000) matchScore += 10;
           if (priority === "performance" && parseInt(laptop.specs.memory) >= 16) matchScore += 15;
+          if (priority === "display" && (laptop.specs.display.includes("有機EL") || laptop.specs.display.includes("Retina") || laptop.specs.display.includes("WQXGA"))) matchScore += 15;
         });
         return { ...laptop, matchScore };
       })

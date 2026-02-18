@@ -13,7 +13,8 @@ function resolveSpecs(input: UserPcInput): EstimatedSpecs {
   const purchaseYear = input.purchaseYear || CURRENT_YEAR - 3;
   const estimated = estimateSpecs(input.manufacturer, purchaseYear);
   const isEstimated =
-    !input.cpu && !input.memoryGB && !input.storageGB;
+    !input.cpu && !input.memoryGB && !input.storageGB &&
+    (!input.storageType || input.storageType === "わからない") && !input.gpu;
 
   let cpuScore = estimated.cpuScore;
   let cpu = estimated.cpu;
@@ -72,9 +73,10 @@ function rateUsage(
   // GPU
   if (req.needsGpu) {
     const hasGpu =
-      specs.gpu !== "内蔵" &&
-      !specs.gpu.includes("内蔵") &&
-      specs.gpu !== "";
+      specs.gpu !== "" &&
+      !specs.gpu.startsWith("内蔵") &&
+      !specs.gpu.includes("Intel") &&
+      !specs.gpu.includes("Iris");
     score += hasGpu ? 25 : 5;
   } else {
     score += 20;
@@ -209,11 +211,6 @@ export function generateReport(input: UserPcInput): DiagnosticReport {
     rateUsage("gaming", "ゲーミング", "🎮", specs, ageYears),
     rateUsage("ai", "AI・機械学習", "🤖", specs, ageYears),
   ];
-
-  const avgScore =
-    Math.round(
-      usageRatings.reduce((sum, r) => sum + r.score, 0) / usageRatings.length
-    );
 
   // 総合スコアはCPU、メモリ、経年を加味
   let overallScore = 0;

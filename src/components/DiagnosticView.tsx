@@ -79,13 +79,6 @@ export function DiagnosticView() {
     return "progress-fill-red";
   };
 
-  const scoreBadgeClass = (score: number) => {
-    if (score >= 75) return "score-great";
-    if (score >= 55) return "score-good";
-    if (score >= 35) return "score-fair";
-    return "score-poor";
-  };
-
   const verdictClass = (verdict: string) => {
     if (verdict === "まだまだ現役") return "verdict-great";
     if (verdict === "そろそろ買い替え検討") return "verdict-fair";
