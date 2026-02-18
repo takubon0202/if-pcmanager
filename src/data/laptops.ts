@@ -2,6 +2,71 @@ import type { LaptopRecommendation } from "@/types";
 
 // 2026年2月18日時点 - Codex + Gemini CLIによるWeb検索で取得した最新データ
 export const LAPTOP_DATABASE: LaptopRecommendation[] = [
+  // ===== Apple認定整備済製品 =====
+  {
+    name: "MacBook Air 13インチ M2 [認定整備済製品]",
+    brand: "Apple",
+    price: 127800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-air",
+    modelNumber: "MBA-M2-13-REF",
+    specs: { cpu: "Apple M2 (8コアCPU)", memory: "8GB", storage: "256GB SSD", display: '13.6" Liquid Retina (2560x1664)', gpu: "内蔵 (8コアGPU)", battery: "18時間", weight: "1.24kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Air 13インチ M4 [認定整備済製品]",
+    brand: "Apple",
+    price: 139800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-air",
+    modelNumber: "MBA-M4-13-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "16GB", storage: "256GB SSD", display: '13.6" Liquid Retina (2560x1664)', gpu: "内蔵 (8コアGPU)", battery: "18時間", weight: "1.24kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Air 13インチ M4 512GB [認定整備済製品]",
+    brand: "Apple",
+    price: 165800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-air",
+    modelNumber: "MBA-M4-13-512-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "16GB", storage: "512GB SSD", display: '13.6" Liquid Retina (2560x1664)', gpu: "内蔵 (10コアGPU)", battery: "18時間", weight: "1.24kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Air 15インチ M4 [認定整備済製品]",
+    brand: "Apple",
+    price: 168800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-air",
+    modelNumber: "MBA-M4-15-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "16GB", storage: "256GB SSD", display: '15.3" Liquid Retina (2880x1864)', gpu: "内蔵 (10コアGPU)", battery: "18時間", weight: "1.51kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Air 15インチ M4 512GB [認定整備済製品]",
+    brand: "Apple",
+    price: 193800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-air",
+    modelNumber: "MBA-M4-15-512-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "16GB", storage: "512GB SSD", display: '15.3" Liquid Retina (2880x1864)', gpu: "内蔵 (10コアGPU)", battery: "18時間", weight: "1.51kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Pro 14インチ M4 [認定整備済製品]",
+    brand: "Apple",
+    price: 197800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-pro",
+    modelNumber: "MBP-M4-14-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "16GB", storage: "512GB SSD", display: '14.2" Liquid Retina XDR', gpu: "内蔵 (10コアGPU)", battery: "24時間", weight: "1.55kg" },
+    matchScore: 0, reasons: [],
+  },
+  {
+    name: "MacBook Pro 14インチ M4 1TB [認定整備済製品]",
+    brand: "Apple",
+    price: 223800,
+    url: "https://www.apple.com/jp/shop/refurbished/mac/macbook-pro",
+    modelNumber: "MBP-M4-14-1TB-REF",
+    specs: { cpu: "Apple M4 (10コアCPU)", memory: "24GB", storage: "1TB SSD", display: '14.2" Liquid Retina XDR', gpu: "内蔵 (10コアGPU)", battery: "24時間", weight: "1.55kg" },
+    matchScore: 0, reasons: [],
+  },
+
   // ===== バジェット帯 (<100,000円) =====
   {
     name: "HP 15-fc",
