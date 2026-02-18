@@ -8,6 +8,7 @@ import {
   type UserPcInput,
 } from "@/types/diagnostic";
 import type { DiagnosticReport } from "@/types/diagnostic";
+import EmailReportButton from "./EmailReportButton";
 import { generateReport } from "@/lib/diagnostic-engine";
 import { runDiagnostics } from "@/lib/diagnostics";
 
@@ -466,6 +467,13 @@ export function DiagnosticView() {
               </ul>
             </div>
           )}
+
+          <EmailReportButton
+            payload={{
+              type: "diagnostic",
+              report,
+            }}
+          />
 
           <button
             onClick={() => {

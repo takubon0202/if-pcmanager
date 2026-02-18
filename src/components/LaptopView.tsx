@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { LaptopRecommendation } from "@/types";
 import { LAPTOP_DATABASE } from "@/data/laptops";
+import EmailReportButton from "./EmailReportButton";
 
 const PURPOSES = [
   { id: "web", label: "Web閲覧・動画視聴", icon: "🌐" },
@@ -313,6 +314,26 @@ export function LaptopView() {
               </div>
             ))
           )}
+          {recommendations.length > 0 && (
+            <EmailReportButton
+              payload={{
+                type: "laptop",
+                laptops: recommendations,
+                conditions: {
+                  purposes: selectedPurposes.map(
+                    (id) => PURPOSES.find((p) => p.id === id)?.label ?? id
+                  ),
+                  budget: `¥${budget.min.toLocaleString()} 〜 ¥${budget.max.toLocaleString()}`,
+                  size:
+                    SIZES.find((s) => s.id === size)?.label ?? "指定なし",
+                  priorities: selectedPriorities.map(
+                    (id) => PRIORITIES.find((p) => p.id === id)?.label ?? id
+                  ),
+                },
+              }}
+            />
+          )}
+
           <button
             onClick={() => {
               setStep("purpose");
