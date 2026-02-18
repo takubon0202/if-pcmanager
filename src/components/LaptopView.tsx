@@ -21,6 +21,12 @@ const SIZES = [
   { id: "any", label: "こだわらない", desc: "" },
 ];
 
+const OS_OPTIONS = [
+  { id: "windows", label: "Windows", icon: "🪟", desc: "" },
+  { id: "mac", label: "Mac", icon: "🍎", desc: "Apple Siliconで高性能＆長時間バッテリー" },
+  { id: "any", label: "どちらでも良い", icon: "🔄", desc: "" },
+];
+
 const PRIORITIES = [
   { id: "performance", label: "⚡ 性能重視" },
   { id: "portable", label: "🪶 軽さ重視" },
@@ -29,13 +35,14 @@ const PRIORITIES = [
   { id: "display", label: "🖥 画面品質重視" },
 ];
 
-type Step = "purpose" | "budget" | "size" | "priority" | "result";
+type Step = "purpose" | "os" | "budget" | "size" | "priority" | "result";
 
 export function LaptopView() {
   const [step, setStep] = useState<Step>("purpose");
   const [selectedPurposes, setSelectedPurposes] = useState<string[]>([]);
   const [budget, setBudget] = useState({ min: 50000, max: 200000 });
   const [size, setSize] = useState<string | null>(null);
+  const [osPreference, setOsPreference] = useState<string | null>(null);
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
   const [recommendations, setRecommendations] = useState<LaptopRecommendation[]>([]);
 
@@ -57,6 +64,8 @@ export function LaptopView() {
 
     const results = LAPTOP_DATABASE.filter((laptop) => {
       if (laptop.price < effectiveMin || laptop.price > effectiveMax) return false;
+      if (osPreference === "mac" && laptop.brand !== "Apple") return false;
+      if (osPreference === "windows" && laptop.brand === "Apple") return false;
       return true;
     })
       .map((laptop) => {
@@ -107,7 +116,7 @@ export function LaptopView() {
 
       {/* ステップインジケーター */}
       <div className="flex justify-center gap-2">
-        {(["purpose", "budget", "size", "priority", "result"] as Step[]).map((s) => (
+        {(["purpose", "os", "budget", "size", "priority", "result"] as Step[]).map((s) => (
           <div
             key={s}
             className={`w-2.5 h-2.5 rounded-full transition-all ${
@@ -138,7 +147,7 @@ export function LaptopView() {
             </div>
           </div>
           <button
-            onClick={() => setStep("budget")}
+            onClick={() => setStep("os")}
             disabled={selectedPurposes.length === 0}
             className="btn-primary w-full py-3"
           >
@@ -147,7 +156,54 @@ export function LaptopView() {
         </div>
       )}
 
-      {/* Step 2: 予算 */}
+      {/* Step 2: OS選択 */}
+      {step === "os" && (
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-3">
+            <h3 className="font-medium text-slate-200">OSの希望は？</h3>
+            <div className="space-y-2">
+              {OS_OPTIONS.map((o) => (
+                <button
+                  key={o.id}
+                  onClick={() => setOsPreference(o.id)}
+                  className={`card w-full p-3 text-left transition-all ${
+                    osPreference === o.id ? "card-active" : ""
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{o.icon}</span>
+                    <div>
+                      <p className="font-medium text-sm text-slate-200">{o.label}</p>
+                      {o.desc && <p className="text-xs text-slate-400">{o.desc}</p>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+            {osPreference === "mac" && (
+              <div className="p-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+                <p className="text-xs text-indigo-300">
+                  💡 Apple Siliconチップ搭載のMacは、省電力ながら高い処理性能を発揮し、バッテリー駆動時間も15〜22時間と非常に優秀です。クリエイティブ用途やプログラミングに最適です。
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-3">
+            <button onClick={() => setStep("purpose")} className="btn-secondary flex-1 py-3">
+              ← 戻る
+            </button>
+            <button
+              onClick={() => setStep("budget")}
+              disabled={!osPreference}
+              className="btn-primary flex-1 py-3"
+            >
+              次へ →
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 3: 予算 */}
       {step === "budget" && (
         <div className="space-y-4 animate-fade-in">
           <div className="card p-5 space-y-4">
@@ -184,7 +240,7 @@ export function LaptopView() {
             </div>
           </div>
           <div className="flex gap-3">
-            <button onClick={() => setStep("purpose")} className="btn-secondary flex-1 py-3">
+            <button onClick={() => setStep("os")} className="btn-secondary flex-1 py-3">
               ← 戻る
             </button>
             <button onClick={() => setStep("size")} className="btn-primary flex-1 py-3">
@@ -323,6 +379,7 @@ export function LaptopView() {
                   purposes: selectedPurposes.map(
                     (id) => PURPOSES.find((p) => p.id === id)?.label ?? id
                   ),
+                  os: OS_OPTIONS.find((o) => o.id === osPreference)?.label ?? "指定なし",
                   budget: `¥${budget.min.toLocaleString()} 〜 ¥${budget.max.toLocaleString()}`,
                   size:
                     SIZES.find((s) => s.id === size)?.label ?? "指定なし",
@@ -338,6 +395,7 @@ export function LaptopView() {
             onClick={() => {
               setStep("purpose");
               setSelectedPurposes([]);
+              setOsPreference(null);
               setBudget({ min: 50000, max: 200000 });
               setSize(null);
               setSelectedPriorities([]);
