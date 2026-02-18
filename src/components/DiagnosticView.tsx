@@ -11,6 +11,7 @@ import type { DiagnosticReport } from "@/types/diagnostic";
 import EmailReportButton from "./EmailReportButton";
 import { generateReport } from "@/lib/diagnostic-engine";
 import { runDiagnostics } from "@/lib/diagnostics";
+import { getModelsForManufacturer } from "@/data/model-catalog";
 
 type Step = "basic" | "specs" | "issues" | "result";
 
@@ -41,6 +42,7 @@ export function DiagnosticView() {
     currentIssues: [],
   });
   const [report, setReport] = useState<DiagnosticReport | null>(null);
+  const [modelInputMode, setModelInputMode] = useState<"select" | "manual">("select");
 
   const updateInput = (updates: Partial<UserPcInput>) => {
     setInput((prev) => ({ ...prev, ...updates }));
@@ -161,7 +163,10 @@ export function DiagnosticView() {
               <label className="block text-sm text-slate-400 mb-2">メーカー</label>
               <select
                 value={input.manufacturer}
-                onChange={(e) => updateInput({ manufacturer: e.target.value })}
+                onChange={(e) => {
+                  updateInput({ manufacturer: e.target.value, modelNumber: "" });
+                  setModelInputMode("select");
+                }}
               >
                 <option value="">選択してください</option>
                 {MANUFACTURERS.map((m) => (
@@ -171,15 +176,50 @@ export function DiagnosticView() {
             </div>
 
             <div>
-              <label className="block text-sm text-slate-400 mb-2">
-                型番 <span className="text-slate-600">（わかれば）</span>
-              </label>
-              <input
-                type="text"
-                value={input.modelNumber}
-                onChange={(e) => updateInput({ modelNumber: e.target.value })}
-                placeholder="例: MacBook Air M2, ThinkPad X1 Carbon"
-              />
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm text-slate-400">
+                  型番 <span className="text-slate-600">（わかれば）</span>
+                </label>
+                {input.manufacturer && getModelsForManufacturer(input.manufacturer).length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setModelInputMode(modelInputMode === "select" ? "manual" : "select");
+                      updateInput({ modelNumber: "" });
+                    }}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                  >
+                    {modelInputMode === "select" ? "✏️ 手動で入力" : "📋 一覧から選択"}
+                  </button>
+                )}
+              </div>
+
+              {modelInputMode === "select" &&
+               input.manufacturer &&
+               getModelsForManufacturer(input.manufacturer).length > 0 ? (
+                <select
+                  value={input.modelNumber}
+                  onChange={(e) => updateInput({ modelNumber: e.target.value })}
+                >
+                  <option value="">選択してください（任意）</option>
+                  {getModelsForManufacturer(input.manufacturer).map((group) => (
+                    <optgroup key={group.series} label={group.series}>
+                      {group.models.map((m) => (
+                        <option key={m.name} value={m.name}>
+                          {m.name}{m.year ? ` (${m.year})` : ""}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  value={input.modelNumber}
+                  onChange={(e) => updateInput({ modelNumber: e.target.value })}
+                  placeholder="例: MacBook Air M2, ThinkPad X1 Carbon"
+                />
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
