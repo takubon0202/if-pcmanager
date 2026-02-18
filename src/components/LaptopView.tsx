@@ -21,11 +21,11 @@ const SIZES = [
 ];
 
 const PRIORITIES = [
-  { id: "performance", label: "性能重視" },
-  { id: "portable", label: "軽さ重視" },
-  { id: "battery", label: "バッテリー重視" },
-  { id: "cost", label: "コスパ重視" },
-  { id: "display", label: "画面品質重視" },
+  { id: "performance", label: "⚡ 性能重視" },
+  { id: "portable", label: "🪶 軽さ重視" },
+  { id: "battery", label: "🔋 バッテリー重視" },
+  { id: "cost", label: "💰 コスパ重視" },
+  { id: "display", label: "🖥 画面品質重視" },
 ];
 
 type Step = "purpose" | "budget" | "size" | "priority" | "result";
@@ -36,9 +36,7 @@ export function LaptopView() {
   const [budget, setBudget] = useState({ min: 50000, max: 200000 });
   const [size, setSize] = useState<string | null>(null);
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
-  const [recommendations, setRecommendations] = useState<
-    LaptopRecommendation[]
-  >([]);
+  const [recommendations, setRecommendations] = useState<LaptopRecommendation[]>([]);
 
   const togglePurpose = (id: string) => {
     setSelectedPurposes((prev) =>
@@ -59,49 +57,20 @@ export function LaptopView() {
     })
       .map((laptop) => {
         let matchScore = 0;
-
-        // 用途マッチング
         selectedPurposes.forEach((purpose) => {
-          if (purpose === "gaming" && laptop.specs.gpu !== "内蔵")
-            matchScore += 20;
-          if (purpose === "programming" && parseInt(laptop.specs.memory) >= 16)
-            matchScore += 15;
-          if (
-            purpose === "design" &&
-            laptop.specs.display.includes("有機EL")
-          )
-            matchScore += 15;
+          if (purpose === "gaming" && laptop.specs.gpu !== "内蔵") matchScore += 20;
+          if (purpose === "programming" && parseInt(laptop.specs.memory) >= 16) matchScore += 15;
+          if (purpose === "design" && laptop.specs.display.includes("有機EL")) matchScore += 15;
           if (purpose === "office") matchScore += 10;
           if (purpose === "web") matchScore += 10;
-          if (
-            purpose === "ai" &&
-            (laptop.specs.gpu.includes("RTX") ||
-              laptop.specs.cpu.includes("M4"))
-          )
-            matchScore += 20;
+          if (purpose === "ai" && (laptop.specs.gpu.includes("RTX") || laptop.specs.cpu.includes("M4"))) matchScore += 20;
         });
-
-        // 優先度マッチング
         selectedPriorities.forEach((priority) => {
-          if (
-            priority === "portable" &&
-            parseFloat(laptop.specs.weight) < 1.5
-          )
-            matchScore += 15;
-          if (
-            priority === "battery" &&
-            parseInt(laptop.specs.battery) >= 10
-          )
-            matchScore += 15;
-          if (priority === "cost" && laptop.price < 150000)
-            matchScore += 10;
-          if (
-            priority === "performance" &&
-            parseInt(laptop.specs.memory) >= 16
-          )
-            matchScore += 15;
+          if (priority === "portable" && parseFloat(laptop.specs.weight) < 1.5) matchScore += 15;
+          if (priority === "battery" && parseInt(laptop.specs.battery) >= 10) matchScore += 15;
+          if (priority === "cost" && laptop.price < 150000) matchScore += 10;
+          if (priority === "performance" && parseInt(laptop.specs.memory) >= 16) matchScore += 15;
         });
-
         return { ...laptop, matchScore };
       })
       .sort((a, b) => b.matchScore - a.matchScore)
@@ -112,119 +81,98 @@ export function LaptopView() {
   };
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-5 animate-fade-in">
       <div className="text-center">
-        <h2 className="text-xl font-bold text-gray-800">ノートPC提案</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <h2 className="text-xl font-bold gradient-text">💻 ノートPC提案</h2>
+        <p className="text-sm text-slate-400 mt-1">
           あなたにぴったりのノートPCを見つけます
         </p>
       </div>
 
       {/* ステップインジケーター */}
       <div className="flex justify-center gap-2">
-        {(["purpose", "budget", "size", "priority", "result"] as Step[]).map(
-          (s, i) => (
-            <div
-              key={s}
-              className={`w-2 h-2 rounded-full ${
-                step === s ? "bg-blue-500" : "bg-gray-200"
-              }`}
-            />
-          )
-        )}
+        {(["purpose", "budget", "size", "priority", "result"] as Step[]).map((s) => (
+          <div
+            key={s}
+            className={`w-2.5 h-2.5 rounded-full transition-all ${
+              step === s ? "bg-indigo-500 glow" : "bg-slate-700"
+            }`}
+          />
+        ))}
       </div>
 
-      {/* Step 1: 用途選択 */}
+      {/* Step 1: 用途 */}
       {step === "purpose" && (
-        <div className="space-y-3">
-          <h3 className="font-medium text-gray-700">
-            用途を選んでください（複数可）
-          </h3>
-          <div className="grid grid-cols-2 gap-2">
-            {PURPOSES.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => togglePurpose(p.id)}
-                className={`p-3 rounded-xl border-2 text-sm transition-all ${
-                  selectedPurposes.includes(p.id)
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
-                <span className="text-lg">{p.icon}</span>
-                <p className="mt-1">{p.label}</p>
-              </button>
-            ))}
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-3">
+            <h3 className="font-medium text-slate-200">用途を選んでください（複数可）</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {PURPOSES.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => togglePurpose(p.id)}
+                  className={`card p-3 text-center transition-all ${
+                    selectedPurposes.includes(p.id) ? "card-active" : ""
+                  }`}
+                >
+                  <span className="text-2xl">{p.icon}</span>
+                  <p className="mt-1 text-sm text-slate-300">{p.label}</p>
+                </button>
+              ))}
+            </div>
           </div>
           <button
             onClick={() => setStep("budget")}
             disabled={selectedPurposes.length === 0}
-            className="w-full py-3 bg-blue-500 text-white rounded-xl font-medium
-                       disabled:opacity-50 hover:bg-blue-600 transition-colors"
+            className="btn-primary w-full py-3"
           >
-            次へ
+            次へ →
           </button>
         </div>
       )}
 
       {/* Step 2: 予算 */}
       {step === "budget" && (
-        <div className="space-y-4">
-          <h3 className="font-medium text-gray-700">予算を設定</h3>
-          <div className="space-y-3">
-            <div>
-              <label className="text-sm text-gray-500">下限</label>
-              <input
-                type="range"
-                min={30000}
-                max={500000}
-                step={10000}
-                value={budget.min}
-                onChange={(e) =>
-                  setBudget((prev) => ({
-                    ...prev,
-                    min: Number(e.target.value),
-                  }))
-                }
-                className="w-full"
-              />
-              <p className="text-center text-sm font-medium">
-                {budget.min.toLocaleString()}円
-              </p>
-            </div>
-            <div>
-              <label className="text-sm text-gray-500">上限</label>
-              <input
-                type="range"
-                min={30000}
-                max={500000}
-                step={10000}
-                value={budget.max}
-                onChange={(e) =>
-                  setBudget((prev) => ({
-                    ...prev,
-                    max: Number(e.target.value),
-                  }))
-                }
-                className="w-full"
-              />
-              <p className="text-center text-sm font-medium">
-                {budget.max.toLocaleString()}円
-              </p>
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-4">
+            <h3 className="font-medium text-slate-200">予算を設定</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-slate-400">下限</label>
+                <input
+                  type="range"
+                  min={30000}
+                  max={500000}
+                  step={10000}
+                  value={budget.min}
+                  onChange={(e) => setBudget((prev) => ({ ...prev, min: Number(e.target.value) }))}
+                />
+                <p className="text-center text-sm font-medium text-indigo-300">
+                  {budget.min.toLocaleString()}円
+                </p>
+              </div>
+              <div>
+                <label className="text-sm text-slate-400">上限</label>
+                <input
+                  type="range"
+                  min={30000}
+                  max={500000}
+                  step={10000}
+                  value={budget.max}
+                  onChange={(e) => setBudget((prev) => ({ ...prev, max: Number(e.target.value) }))}
+                />
+                <p className="text-center text-sm font-medium text-indigo-300">
+                  {budget.max.toLocaleString()}円
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setStep("purpose")}
-              className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl"
-            >
-              戻る
+          <div className="flex gap-3">
+            <button onClick={() => setStep("purpose")} className="btn-secondary flex-1 py-3">
+              ← 戻る
             </button>
-            <button
-              onClick={() => setStep("size")}
-              className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium"
-            >
-              次へ
+            <button onClick={() => setStep("size")} className="btn-primary flex-1 py-3">
+              次へ →
             </button>
           </div>
         </div>
@@ -232,39 +180,34 @@ export function LaptopView() {
 
       {/* Step 3: サイズ */}
       {step === "size" && (
-        <div className="space-y-3">
-          <h3 className="font-medium text-gray-700">画面サイズの好みは？</h3>
-          <div className="space-y-2">
-            {SIZES.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setSize(s.id)}
-                className={`w-full p-3 rounded-xl border-2 text-left transition-all ${
-                  size === s.id
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 bg-white"
-                }`}
-              >
-                <p className="font-medium text-sm">{s.label}</p>
-                {s.desc && (
-                  <p className="text-xs text-gray-500">{s.desc}</p>
-                )}
-              </button>
-            ))}
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-3">
+            <h3 className="font-medium text-slate-200">画面サイズの好みは？</h3>
+            <div className="space-y-2">
+              {SIZES.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => setSize(s.id)}
+                  className={`card w-full p-3 text-left transition-all ${
+                    size === s.id ? "card-active" : ""
+                  }`}
+                >
+                  <p className="font-medium text-sm text-slate-200">{s.label}</p>
+                  {s.desc && <p className="text-xs text-slate-500">{s.desc}</p>}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setStep("budget")}
-              className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl"
-            >
-              戻る
+          <div className="flex gap-3">
+            <button onClick={() => setStep("budget")} className="btn-secondary flex-1 py-3">
+              ← 戻る
             </button>
             <button
               onClick={() => setStep("priority")}
               disabled={!size}
-              className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium disabled:opacity-50"
+              className="btn-primary flex-1 py-3"
             >
-              次へ
+              次へ →
             </button>
           </div>
         </div>
@@ -272,38 +215,31 @@ export function LaptopView() {
 
       {/* Step 4: 優先度 */}
       {step === "priority" && (
-        <div className="space-y-3">
-          <h3 className="font-medium text-gray-700">
-            重視するポイント（複数可）
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {PRIORITIES.map((p) => (
-              <button
-                key={p.id}
-                onClick={() => togglePriority(p.id)}
-                className={`px-4 py-2 rounded-full border-2 text-sm transition-all ${
-                  selectedPriorities.includes(p.id)
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 bg-white text-gray-700"
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-3">
+            <h3 className="font-medium text-slate-200">重視するポイント（複数可）</h3>
+            <div className="flex flex-wrap gap-2">
+              {PRIORITIES.map((p) => (
+                <button
+                  key={p.id}
+                  onClick={() => togglePriority(p.id)}
+                  className={`chip ${selectedPriorities.includes(p.id) ? "chip-active" : ""}`}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setStep("size")}
-              className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl"
-            >
-              戻る
+          <div className="flex gap-3">
+            <button onClick={() => setStep("size")} className="btn-secondary flex-1 py-3">
+              ← 戻る
             </button>
             <button
               onClick={findRecommendations}
               disabled={selectedPriorities.length === 0}
-              className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium disabled:opacity-50"
+              className="btn-primary flex-1 py-3"
             >
-              おすすめを見る
+              🔍 おすすめを見る
             </button>
           </div>
         </div>
@@ -311,46 +247,50 @@ export function LaptopView() {
 
       {/* Step 5: 結果 */}
       {step === "result" && (
-        <div className="space-y-3">
-          <h3 className="font-medium text-gray-700">おすすめノートPC</h3>
+        <div className="space-y-4 animate-fade-in">
+          <h3 className="font-medium text-slate-200">おすすめノートPC</h3>
           {recommendations.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">
-              条件に合うPCが見つかりませんでした。
-              <br />
-              予算を調整してみてください。
-            </p>
+            <div className="card p-8 text-center">
+              <p className="text-slate-400">
+                条件に合うPCが見つかりませんでした。
+                <br />
+                予算を調整してみてください。
+              </p>
+            </div>
           ) : (
             recommendations.map((laptop, i) => (
-              <div
-                key={i}
-                className="p-4 bg-white rounded-xl border border-gray-200 space-y-2"
-              >
+              <div key={i} className="card p-4 space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-bold text-gray-800">{laptop.name}</p>
-                    <p className="text-xs text-gray-500">{laptop.brand}</p>
+                    <p className="font-bold text-slate-200">{laptop.name}</p>
+                    <p className="text-xs text-slate-500">{laptop.brand}</p>
                   </div>
-                  <p className="text-blue-600 font-bold">
+                  <p className="text-indigo-400 font-bold text-lg">
                     ¥{laptop.price.toLocaleString()}
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-1 text-xs text-gray-600">
-                  <p>CPU: {laptop.specs.cpu}</p>
-                  <p>メモリ: {laptop.specs.memory}</p>
-                  <p>ストレージ: {laptop.specs.storage}</p>
-                  <p>GPU: {laptop.specs.gpu}</p>
-                  <p>画面: {laptop.specs.display}</p>
-                  <p>重量: {laptop.specs.weight}</p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {[
+                    { label: "CPU", value: laptop.specs.cpu },
+                    { label: "メモリ", value: laptop.specs.memory },
+                    { label: "ストレージ", value: laptop.specs.storage },
+                    { label: "GPU", value: laptop.specs.gpu },
+                    { label: "画面", value: laptop.specs.display },
+                    { label: "重量", value: laptop.specs.weight },
+                  ].map((spec) => (
+                    <div key={spec.label} className="p-2 rounded-lg bg-slate-800/50">
+                      <p className="text-slate-500">{spec.label}</p>
+                      <p className="text-slate-300">{spec.value}</p>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-xs text-gray-400">
-                  品番: {laptop.modelNumber}
-                </p>
+                <p className="text-xs text-slate-500">品番: {laptop.modelNumber}</p>
                 {laptop.url && (
                   <a
                     href={laptop.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-center py-2 bg-blue-50 text-blue-600 rounded-lg text-sm font-medium"
+                    className="btn-primary block text-center py-2 text-sm"
                   >
                     詳細を見る →
                   </a>
@@ -367,7 +307,7 @@ export function LaptopView() {
               setSelectedPriorities([]);
               setRecommendations([]);
             }}
-            className="w-full py-3 bg-gray-100 text-gray-600 rounded-xl"
+            className="btn-secondary w-full py-3"
           >
             最初からやり直す
           </button>

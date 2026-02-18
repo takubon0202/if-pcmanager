@@ -18,56 +18,55 @@ export default function Home() {
       .catch((err) => {
         setLiffError("LIFF初期化に失敗しました");
         console.error(err);
-        // LIFF外でも動作可能にする
         setLiffReady(true);
       });
   }, []);
 
   if (!liffReady) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto" />
-          <p className="mt-3 text-sm text-gray-500">読み込み中...</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <div className="w-12 h-12 rounded-full border-2 border-indigo-400 border-t-transparent animate-spin mx-auto" />
+          <p className="mt-4 text-sm text-slate-400">読み込み中...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* ヘッダー */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <header className="sticky top-0 z-10 backdrop-blur-xl bg-slate-900/70 border-b border-indigo-500/10">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => setMode(null)}
-            className="text-lg font-bold text-gray-800"
+            className="text-lg font-bold gradient-text"
           >
             ⚡ PC Manager
           </button>
           {mode && (
             <button
               onClick={() => setMode(null)}
-              className="text-sm text-blue-500"
+              className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
             >
-              モード選択に戻る
+              ← モード選択
             </button>
           )}
         </div>
         {liffError && (
-          <div className="bg-yellow-50 px-4 py-1 text-xs text-yellow-700 text-center">
+          <div className="bg-amber-500/10 px-4 py-1 text-xs text-amber-400 text-center border-t border-amber-500/10">
             {liffError}（ブラウザモードで動作中）
           </div>
         )}
       </header>
 
       {/* メインコンテンツ */}
-      <main className="max-w-lg mx-auto pb-20">
+      <main className="max-w-lg mx-auto pb-20 animate-fade-in">
         {!mode && (
           <>
-            <div className="text-center pt-6 pb-2">
-              <h1 className="text-2xl font-bold text-gray-800">PC Manager</h1>
-              <p className="text-sm text-gray-500 mt-1">
+            <div className="text-center pt-8 pb-4 px-4">
+              <h1 className="text-3xl font-bold gradient-text">PC Manager</h1>
+              <p className="text-sm text-slate-400 mt-2">
                 あなたに最適なPC環境を見つけよう
               </p>
             </div>

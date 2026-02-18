@@ -10,32 +10,26 @@ interface ModeSelectorProps {
 export function ModeSelector({ currentMode, onSelectMode }: ModeSelectorProps) {
   return (
     <div className="grid grid-cols-2 gap-3 p-4">
-      {MODES.map((mode) => (
+      {MODES.map((mode, i) => (
         <button
           key={mode.id}
           onClick={() => mode.enabled && onSelectMode(mode.id)}
           disabled={!mode.enabled}
           className={`
-            flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all
-            ${
-              currentMode === mode.id
-                ? "border-blue-500 bg-blue-50 shadow-md"
-                : mode.enabled
-                  ? "border-gray-200 bg-white hover:border-blue-300 hover:shadow-sm"
-                  : "border-gray-100 bg-gray-50 opacity-50 cursor-not-allowed"
-            }
+            card flex flex-col items-center gap-2 p-5 transition-all
+            ${currentMode === mode.id ? "card-active" : ""}
+            ${!mode.enabled ? "opacity-35 cursor-not-allowed" : "cursor-pointer"}
           `}
+          style={{ animationDelay: `${i * 60}ms` }}
         >
-          <span className="text-2xl">{mode.icon}</span>
-          <span
-            className={`text-sm font-medium ${
-              currentMode === mode.id ? "text-blue-700" : "text-gray-700"
-            }`}
-          >
+          <span className="text-3xl">{mode.icon}</span>
+          <span className="text-sm font-medium text-slate-200">
             {mode.label}
           </span>
-          {!mode.enabled && (
-            <span className="text-xs text-gray-400">Coming Soon</span>
+          {mode.enabled ? (
+            <span className="text-xs text-slate-500">{mode.description}</span>
+          ) : (
+            <span className="text-xs text-indigo-400/50">Coming Soon</span>
           )}
         </button>
       ))}

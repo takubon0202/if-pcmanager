@@ -15,9 +15,15 @@ type Step = "basic" | "specs" | "issues" | "result";
 
 const YEARS = Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i);
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
-
 const MEMORY_OPTIONS = [4, 8, 16, 32, 64];
 const STORAGE_OPTIONS = [128, 256, 512, 1024, 2048];
+
+const STEPS: { key: Step; label: string }[] = [
+  { key: "basic", label: "基本情報" },
+  { key: "specs", label: "スペック" },
+  { key: "issues", label: "困りごと" },
+  { key: "result", label: "結果" },
+];
 
 export function DiagnosticView() {
   const [step, setStep] = useState<Step>("basic");
@@ -53,275 +59,276 @@ export function DiagnosticView() {
   };
 
   const handleDiagnose = () => {
-    // ブラウザ自動取得も追加
     const browserDiag = runDiagnostics();
     const finalInput = { ...input };
-
-    // ブラウザから取得できた情報で補完
     if (!finalInput.memoryGB && browserDiag.hardware.memoryGB) {
       finalInput.memoryGB = browserDiag.hardware.memoryGB;
     }
     if (!finalInput.gpu && browserDiag.gpu) {
       finalInput.gpu = browserDiag.gpu.renderer;
     }
-
     const result = generateReport(finalInput);
     setReport(result);
     setStep("result");
   };
 
-  const verdictColor = {
-    "まだまだ現役": "text-green-600",
-    "そろそろ買い替え検討": "text-yellow-600",
-    "買い替え推奨": "text-red-600",
+  const progressFillClass = (score: number) => {
+    if (score >= 75) return "progress-fill-green";
+    if (score >= 55) return "progress-fill-blue";
+    if (score >= 35) return "progress-fill-yellow";
+    return "progress-fill-red";
   };
 
-  const verdictBg = {
-    "まだまだ現役": "bg-green-50 border-green-200",
-    "そろそろ買い替え検討": "bg-yellow-50 border-yellow-200",
-    "買い替え推奨": "bg-red-50 border-red-200",
+  const scoreBadgeClass = (score: number) => {
+    if (score >= 75) return "score-great";
+    if (score >= 55) return "score-good";
+    if (score >= 35) return "score-fair";
+    return "score-poor";
   };
 
-  const usageVerdictColor = {
-    "快適": "text-green-600 bg-green-50",
-    "問題なし": "text-blue-600 bg-blue-50",
-    "やや厳しい": "text-yellow-600 bg-yellow-50",
-    "厳しい": "text-red-600 bg-red-50",
+  const verdictClass = (verdict: string) => {
+    if (verdict === "まだまだ現役") return "verdict-great";
+    if (verdict === "そろそろ買い替え検討") return "verdict-fair";
+    return "verdict-poor";
   };
 
-  const scoreBarColor = (score: number) => {
-    if (score >= 75) return "bg-green-500";
-    if (score >= 55) return "bg-blue-500";
-    if (score >= 35) return "bg-yellow-500";
-    return "bg-red-500";
+  const verdictTextClass = (verdict: string) => {
+    if (verdict === "まだまだ現役") return "text-emerald-400";
+    if (verdict === "そろそろ買い替え検討") return "text-amber-400";
+    return "text-red-400";
+  };
+
+  const usageVerdictBadge = (verdict: string) => {
+    switch (verdict) {
+      case "快適": return "score-great";
+      case "問題なし": return "score-good";
+      case "やや厳しい": return "score-fair";
+      default: return "score-poor";
+    }
   };
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-4 space-y-5 animate-fade-in">
+      {/* ヘッダー */}
       <div className="text-center">
-        <h2 className="text-xl font-bold text-gray-800">🔍 PC診断</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <h2 className="text-xl font-bold gradient-text">🔍 PC診断</h2>
+        <p className="text-sm text-slate-400 mt-1">
           あなたのPCの状態を診断します
         </p>
       </div>
 
-      {/* ステップインジケーター */}
-      <div className="flex justify-center gap-2">
-        {(["basic", "specs", "issues", "result"] as Step[]).map((s) => (
-          <div
-            key={s}
-            className={`w-2.5 h-2.5 rounded-full transition-colors ${
-              step === s ? "bg-blue-500" : "bg-gray-200"
-            }`}
-          />
-        ))}
+      {/* ステッパー */}
+      <div className="flex items-center justify-center gap-1 px-2">
+        {STEPS.map((s, i) => {
+          const isActive = step === s.key;
+          const stepIndex = STEPS.findIndex((st) => st.key === step);
+          const isPast = STEPS.findIndex((st) => st.key === s.key) < stepIndex;
+          return (
+            <div key={s.key} className="flex items-center gap-1">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                    isActive
+                      ? "bg-indigo-500 text-white glow"
+                      : isPast
+                        ? "bg-indigo-500/30 text-indigo-300"
+                        : "bg-slate-700 text-slate-500"
+                  }`}
+                >
+                  {isPast ? "✓" : i + 1}
+                </div>
+                <span
+                  className={`text-[10px] mt-1 ${
+                    isActive ? "text-indigo-400" : "text-slate-500"
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </div>
+              {i < STEPS.length - 1 && (
+                <div
+                  className={`w-8 h-0.5 mb-4 rounded ${
+                    isPast ? "bg-indigo-500/50" : "bg-slate-700"
+                  }`}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Step 1: 基本情報 */}
       {step === "basic" && (
-        <div className="space-y-4">
-          <h3 className="font-medium text-gray-700">基本情報を教えてください</h3>
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-4">
+            <h3 className="font-medium text-slate-200">基本情報を教えてください</h3>
 
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">メーカー</label>
-            <select
-              value={input.manufacturer}
-              onChange={(e) => updateInput({ manufacturer: e.target.value })}
-              className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
-            >
-              <option value="">選択してください</option>
-              {MANUFACTURERS.map((m) => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">
-              型番 <span className="text-gray-400">（わかれば）</span>
-            </label>
-            <input
-              type="text"
-              value={input.modelNumber}
-              onChange={(e) => updateInput({ modelNumber: e.target.value })}
-              placeholder="例: MacBook Air M2, ThinkPad X1 Carbon"
-              className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm text-gray-600 mb-1">購入年</label>
+              <label className="block text-sm text-slate-400 mb-2">メーカー</label>
               <select
-                value={input.purchaseYear ?? ""}
-                onChange={(e) =>
-                  updateInput({
-                    purchaseYear: e.target.value ? Number(e.target.value) : null,
-                  })
-                }
-                className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
+                value={input.manufacturer}
+                onChange={(e) => updateInput({ manufacturer: e.target.value })}
               >
-                <option value="">わからない</option>
-                {YEARS.map((y) => (
-                  <option key={y} value={y}>{y}年</option>
+                <option value="">選択してください</option>
+                {MANUFACTURERS.map((m) => (
+                  <option key={m} value={m}>{m}</option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-sm text-gray-600 mb-1">購入月</label>
-              <select
-                value={input.purchaseMonth ?? ""}
-                onChange={(e) =>
-                  updateInput({
-                    purchaseMonth: e.target.value ? Number(e.target.value) : null,
-                  })
-                }
-                className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
-              >
-                <option value="">わからない</option>
-                {MONTHS.map((m) => (
-                  <option key={m} value={m}>{m}月</option>
-                ))}
-              </select>
+              <label className="block text-sm text-slate-400 mb-2">
+                型番 <span className="text-slate-600">（わかれば）</span>
+              </label>
+              <input
+                type="text"
+                value={input.modelNumber}
+                onChange={(e) => updateInput({ modelNumber: e.target.value })}
+                placeholder="例: MacBook Air M2, ThinkPad X1 Carbon"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm text-slate-400 mb-2">購入年</label>
+                <select
+                  value={input.purchaseYear ?? ""}
+                  onChange={(e) =>
+                    updateInput({ purchaseYear: e.target.value ? Number(e.target.value) : null })
+                  }
+                >
+                  <option value="">わからない</option>
+                  {YEARS.map((y) => (
+                    <option key={y} value={y}>{y}年</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm text-slate-400 mb-2">購入月</label>
+                <select
+                  value={input.purchaseMonth ?? ""}
+                  onChange={(e) =>
+                    updateInput({ purchaseMonth: e.target.value ? Number(e.target.value) : null })
+                  }
+                >
+                  <option value="">わからない</option>
+                  {MONTHS.map((m) => (
+                    <option key={m} value={m}>{m}月</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
           <button
             onClick={() => setStep("specs")}
             disabled={!input.manufacturer}
-            className="w-full py-3 bg-blue-500 text-white rounded-xl font-medium
-                       disabled:opacity-50 hover:bg-blue-600 transition-colors"
+            className="btn-primary w-full py-3"
           >
-            次へ
+            次へ →
           </button>
         </div>
       )}
 
-      {/* Step 2: スペック情報 */}
+      {/* Step 2: スペック */}
       {step === "specs" && (
-        <div className="space-y-4">
-          <h3 className="font-medium text-gray-700">
-            スペックを教えてください
-            <span className="text-xs text-gray-400 block mt-1">
-              わからない項目はスキップOK（購入時期から推定します）
-            </span>
-          </h3>
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-4">
+            <div>
+              <h3 className="font-medium text-slate-200">スペックを教えてください</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                わからない項目はスキップOK（購入時期から推定します）
+              </p>
+            </div>
 
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">
-              CPU <span className="text-gray-400">（わかれば）</span>
-            </label>
-            <input
-              type="text"
-              value={input.cpu}
-              onChange={(e) => updateInput({ cpu: e.target.value })}
-              placeholder="例: Apple M2, Core i7-12700H, Ryzen 7 7840HS"
-              className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
-            />
-          </div>
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">
+                CPU <span className="text-slate-600">（わかれば）</span>
+              </label>
+              <input
+                type="text"
+                value={input.cpu}
+                onChange={(e) => updateInput({ cpu: e.target.value })}
+                placeholder="例: Apple M2, Core i7-12700H"
+              />
+            </div>
 
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">メモリ</label>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => updateInput({ memoryGB: null })}
-                className={`px-4 py-2 rounded-full border text-sm ${
-                  input.memoryGB === null
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 text-gray-600"
-                }`}
-              >
-                わからない
-              </button>
-              {MEMORY_OPTIONS.map((gb) => (
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">メモリ</label>
+              <div className="flex flex-wrap gap-2">
                 <button
-                  key={gb}
-                  onClick={() => updateInput({ memoryGB: gb })}
-                  className={`px-4 py-2 rounded-full border text-sm ${
-                    input.memoryGB === gb
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-200 text-gray-600"
-                  }`}
+                  onClick={() => updateInput({ memoryGB: null })}
+                  className={`chip ${input.memoryGB === null ? "chip-active" : ""}`}
                 >
-                  {gb}GB
+                  わからない
                 </button>
-              ))}
+                {MEMORY_OPTIONS.map((gb) => (
+                  <button
+                    key={gb}
+                    onClick={() => updateInput({ memoryGB: gb })}
+                    className={`chip ${input.memoryGB === gb ? "chip-active" : ""}`}
+                  >
+                    {gb}GB
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">ストレージ種類</label>
+              <div className="flex flex-wrap gap-2">
+                {STORAGE_TYPES.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => updateInput({ storageType: type })}
+                    className={`chip ${input.storageType === type ? "chip-active" : ""}`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">ストレージ容量</label>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => updateInput({ storageGB: null })}
+                  className={`chip ${input.storageGB === null ? "chip-active" : ""}`}
+                >
+                  わからない
+                </button>
+                {STORAGE_OPTIONS.map((gb) => (
+                  <button
+                    key={gb}
+                    onClick={() => updateInput({ storageGB: gb })}
+                    className={`chip ${input.storageGB === gb ? "chip-active" : ""}`}
+                  >
+                    {gb >= 1024 ? `${gb / 1024}TB` : `${gb}GB`}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm text-slate-400 mb-2">
+                GPU <span className="text-slate-600">（わかれば）</span>
+              </label>
+              <input
+                type="text"
+                value={input.gpu}
+                onChange={(e) => updateInput({ gpu: e.target.value })}
+                placeholder="例: RTX 4060, Radeon RX 7600, 内蔵"
+              />
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">ストレージ種類</label>
-            <div className="flex flex-wrap gap-2">
-              {STORAGE_TYPES.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => updateInput({ storageType: type })}
-                  className={`px-4 py-2 rounded-full border text-sm ${
-                    input.storageType === type
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-200 text-gray-600"
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">ストレージ容量</label>
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => updateInput({ storageGB: null })}
-                className={`px-4 py-2 rounded-full border text-sm ${
-                  input.storageGB === null
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 text-gray-600"
-                }`}
-              >
-                わからない
-              </button>
-              {STORAGE_OPTIONS.map((gb) => (
-                <button
-                  key={gb}
-                  onClick={() => updateInput({ storageGB: gb })}
-                  className={`px-4 py-2 rounded-full border text-sm ${
-                    input.storageGB === gb
-                      ? "border-blue-500 bg-blue-50 text-blue-700"
-                      : "border-gray-200 text-gray-600"
-                  }`}
-                >
-                  {gb >= 1024 ? `${gb / 1024}TB` : `${gb}GB`}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-600 mb-1">
-              GPU <span className="text-gray-400">（わかれば）</span>
-            </label>
-            <input
-              type="text"
-              value={input.gpu}
-              onChange={(e) => updateInput({ gpu: e.target.value })}
-              placeholder="例: RTX 4060, Radeon RX 7600, 内蔵"
-              className="w-full p-3 border border-gray-200 rounded-xl bg-white text-gray-800"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => setStep("basic")}
-              className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl"
-            >
-              戻る
+          <div className="flex gap-3">
+            <button onClick={() => setStep("basic")} className="btn-secondary flex-1 py-3">
+              ← 戻る
             </button>
-            <button
-              onClick={() => setStep("issues")}
-              className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium"
-            >
-              次へ
+            <button onClick={() => setStep("issues")} className="btn-primary flex-1 py-3">
+              次へ →
             </button>
           </div>
         </div>
@@ -329,144 +336,144 @@ export function DiagnosticView() {
 
       {/* Step 3: 困りごと */}
       {step === "issues" && (
-        <div className="space-y-4">
-          <h3 className="font-medium text-gray-700">
-            現在困っていることは？（複数可）
-          </h3>
-          <div className="grid grid-cols-2 gap-2">
-            {ISSUES.map((issue) => (
-              <button
-                key={issue.id}
-                onClick={() => toggleIssue(issue.id)}
-                className={`p-3 rounded-xl border-2 text-sm transition-all ${
-                  input.currentIssues.includes(issue.id)
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
-                    : "border-gray-200 bg-white text-gray-700"
-                }`}
-              >
-                {issue.label}
-              </button>
-            ))}
+        <div className="space-y-4 animate-fade-in">
+          <div className="card p-5 space-y-4">
+            <h3 className="font-medium text-slate-200">現在困っていることは？</h3>
+            <p className="text-xs text-slate-500">複数選択できます</p>
+            <div className="grid grid-cols-2 gap-2">
+              {ISSUES.map((issue) => (
+                <button
+                  key={issue.id}
+                  onClick={() => toggleIssue(issue.id)}
+                  className={`card p-3 text-sm text-center transition-all ${
+                    input.currentIssues.includes(issue.id) ? "card-active" : ""
+                  }`}
+                >
+                  {issue.label}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setStep("specs")}
-              className="flex-1 py-3 bg-gray-100 text-gray-600 rounded-xl"
-            >
-              戻る
+
+          <div className="flex gap-3">
+            <button onClick={() => setStep("specs")} className="btn-secondary flex-1 py-3">
+              ← 戻る
             </button>
             <button
               onClick={handleDiagnose}
               disabled={input.currentIssues.length === 0}
-              className="flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium disabled:opacity-50"
+              className="btn-primary flex-1 py-3"
             >
-              診断する
+              🔍 診断する
             </button>
           </div>
         </div>
       )}
 
-      {/* Step 4: 診断結果 */}
+      {/* Step 4: 結果 */}
       {step === "result" && report && (
-        <div className="space-y-4">
+        <div className="space-y-4 animate-fade-in">
           {/* 総合評価 */}
-          <div className={`p-5 rounded-xl border-2 text-center ${verdictBg[report.overallVerdict]}`}>
-            <p className="text-sm text-gray-500">総合評価</p>
-            <p className={`text-2xl font-bold mt-1 ${verdictColor[report.overallVerdict]}`}>
+          <div className={`p-6 rounded-2xl text-center ${verdictClass(report.overallVerdict)}`}>
+            <p className="text-xs text-slate-400 uppercase tracking-wider">総合評価</p>
+            <p className={`text-2xl font-bold mt-2 ${verdictTextClass(report.overallVerdict)}`}>
               {report.overallVerdict}
             </p>
-            <div className="mt-3">
-              <div className="flex justify-between text-xs text-gray-500 mb-1">
+            <div className="mt-4">
+              <div className="flex justify-between text-xs text-slate-500 mb-1">
                 <span>0</span>
-                <span>スコア: {report.overallScore}/100</span>
+                <span className="text-slate-300 font-medium">スコア: {report.overallScore}/100</span>
                 <span>100</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-3">
+              <div className="progress-bar h-3">
                 <div
-                  className={`h-3 rounded-full transition-all ${scoreBarColor(report.overallScore)}`}
+                  className={`h-3 rounded-full transition-all duration-700 ${progressFillClass(report.overallScore)}`}
                   style={{ width: `${report.overallScore}%` }}
                 />
               </div>
             </div>
             {report.estimatedSpecs.isEstimated && (
-              <p className="text-xs text-gray-400 mt-2">
-                ※ 一部スペックは購入時期・メーカーから推定しています
+              <p className="text-xs text-slate-500 mt-3">
+                ※ 一部スペックは購入時期・メーカーから推定
               </p>
             )}
           </div>
 
-          {/* 推定/入力スペック */}
-          <div className="p-4 bg-white rounded-xl border border-gray-200">
-            <h3 className="font-medium text-gray-700 mb-2">
-              {report.estimatedSpecs.isEstimated ? "推定スペック" : "スペック"}
+          {/* スペック */}
+          <div className="card p-4">
+            <h3 className="font-medium text-slate-300 mb-3">
+              {report.estimatedSpecs.isEstimated ? "📊 推定スペック" : "📊 スペック"}
             </h3>
-            <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-              <p>CPU: {report.estimatedSpecs.cpu}</p>
-              <p>メモリ: {report.estimatedSpecs.memoryGB}GB</p>
-              <p>ストレージ: {report.estimatedSpecs.storageType} {report.estimatedSpecs.storageGB}GB</p>
-              <p>GPU: {report.estimatedSpecs.gpu}</p>
-              <p>経過年数: 約{report.estimatedAge}年</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              {[
+                { label: "CPU", value: report.estimatedSpecs.cpu },
+                { label: "メモリ", value: `${report.estimatedSpecs.memoryGB}GB` },
+                { label: "ストレージ", value: `${report.estimatedSpecs.storageType} ${report.estimatedSpecs.storageGB}GB` },
+                { label: "GPU", value: report.estimatedSpecs.gpu },
+                { label: "経過年数", value: `約${report.estimatedAge}年` },
+              ].map((item) => (
+                <div key={item.label} className="p-2 rounded-lg bg-slate-800/50">
+                  <p className="text-xs text-slate-500">{item.label}</p>
+                  <p className="text-slate-300 font-medium">{item.value}</p>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* 用途別評価 */}
-          <div className="space-y-2">
-            <h3 className="font-medium text-gray-700">用途別評価</h3>
+          <div className="card p-4 space-y-3">
+            <h3 className="font-medium text-slate-300">🎯 用途別評価</h3>
             {report.usageRatings.map((rating) => (
-              <div
-                key={rating.category}
-                className="p-3 bg-white rounded-xl border border-gray-100"
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-700">
+              <div key={rating.category} className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-slate-300">
                     {rating.icon} {rating.label}
                   </span>
-                  <span
-                    className={`text-xs font-medium px-2 py-0.5 rounded-full ${usageVerdictColor[rating.verdict]}`}
-                  >
+                  <span className={`score-badge ${usageVerdictBadge(rating.verdict)}`}>
                     {rating.verdict}
                   </span>
                 </div>
-                <div className="w-full bg-gray-100 rounded-full h-2 mb-1">
+                <div className="progress-bar h-2">
                   <div
-                    className={`h-2 rounded-full ${scoreBarColor(rating.score)}`}
+                    className={`h-2 rounded-full transition-all duration-700 ${progressFillClass(rating.score)}`}
                     style={{ width: `${rating.score}%` }}
                   />
                 </div>
-                <p className="text-xs text-gray-500">{rating.comment}</p>
+                <p className="text-xs text-slate-500">{rating.comment}</p>
               </div>
             ))}
           </div>
 
           {/* アドバイス */}
           {report.advice.length > 0 && (
-            <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
-              <h3 className="font-medium text-blue-800 mb-2">💡 アドバイス</h3>
-              <ul className="space-y-1">
+            <div className="card p-4 border-indigo-500/20">
+              <h3 className="font-medium text-indigo-300 mb-2">💡 アドバイス</h3>
+              <ul className="space-y-2">
                 {report.advice.map((a, i) => (
-                  <li key={i} className="text-sm text-blue-700">
-                    • {a}
+                  <li key={i} className="text-sm text-slate-400 flex gap-2">
+                    <span className="text-indigo-400 shrink-0">•</span>
+                    <span>{a}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* アップグレード提案 */}
+          {/* アップグレード */}
           {report.upgradeOptions.length > 0 && (
-            <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
-              <h3 className="font-medium text-purple-800 mb-2">🔧 アップグレード候補</h3>
-              <ul className="space-y-1">
+            <div className="card p-4 border-cyan-500/20">
+              <h3 className="font-medium text-cyan-300 mb-2">🔧 アップグレード候補</h3>
+              <ul className="space-y-2">
                 {report.upgradeOptions.map((opt, i) => (
-                  <li key={i} className="text-sm text-purple-700">
-                    • {opt}
+                  <li key={i} className="text-sm text-slate-400 flex gap-2">
+                    <span className="text-cyan-400 shrink-0">•</span>
+                    <span>{opt}</span>
                   </li>
                 ))}
               </ul>
             </div>
           )}
 
-          {/* やり直し */}
           <button
             onClick={() => {
               setStep("basic");
@@ -484,7 +491,7 @@ export function DiagnosticView() {
               });
               setReport(null);
             }}
-            className="w-full py-3 bg-gray-100 text-gray-600 rounded-xl"
+            className="btn-secondary w-full py-3"
           >
             最初からやり直す
           </button>
