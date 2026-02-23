@@ -5,6 +5,9 @@ import { initLiff } from "@/lib/liff";
 import { ModeSelector } from "@/components/ModeSelector";
 import { DiagnosticView } from "@/components/DiagnosticView";
 import { LaptopView } from "@/components/LaptopView";
+import { CustomPCView } from "@/components/CustomPCView";
+import { PeripheralView } from "@/components/PeripheralView";
+import { PERIPHERAL_FLOWS } from "@/data/peripherals";
 import type { Mode } from "@/types";
 
 export default function Home() {
@@ -76,6 +79,10 @@ export default function Home() {
 
         {mode === "diagnosis" && <DiagnosticView />}
         {mode === "laptop" && <LaptopView />}
+        {mode === "custom-pc" && <CustomPCView />}
+        {mode && mode in PERIPHERAL_FLOWS && (
+          <PeripheralView key={mode} flow={PERIPHERAL_FLOWS[mode]} />
+        )}
       </main>
     </div>
   );

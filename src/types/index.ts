@@ -5,7 +5,8 @@ export type Mode =
   | "custom-pc"
   | "monitor"
   | "keyboard"
-  | "mouse";
+  | "mouse"
+  | "headset";
 
 export interface ModeConfig {
   id: Mode;
@@ -42,28 +43,35 @@ export const MODES: ModeConfig[] = [
     label: "自作PC",
     icon: "🔧",
     description: "パーツ選定・互換性チェック",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "monitor",
     label: "モニター",
     icon: "🖥",
     description: "最適なモニターを提案",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "keyboard",
     label: "キーボード",
     icon: "⌨️",
     description: "最適なキーボードを提案",
-    enabled: false,
+    enabled: true,
   },
   {
     id: "mouse",
     label: "マウス",
     icon: "🖱️",
     description: "最適なマウスを提案",
-    enabled: false,
+    enabled: true,
+  },
+  {
+    id: "headset",
+    label: "ヘッドセット",
+    icon: "🎧",
+    description: "最適なヘッドセットを提案",
+    enabled: true,
   },
 ];
 
