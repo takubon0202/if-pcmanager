@@ -9,11 +9,6 @@ function getProductUrl(item: PeripheralItem): string {
   return `https://www.amazon.co.jp/s?k=${encodeURIComponent(item.name)}`;
 }
 
-function getUrlLabel(item: PeripheralItem): string {
-  if (item.url) return "商品ページを開く";
-  return `Amazonで「${item.name}」を検索`;
-}
-
 interface PeripheralViewProps {
   flow: PeripheralFlowConfig;
 }
@@ -107,7 +102,6 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
         ) : (
           results.map((item) => {
             const url = getProductUrl(item);
-            const urlLabel = getUrlLabel(item);
             return (
               <div key={item.id} className="card p-4 space-y-3">
                 <div className="flex justify-between items-start">
@@ -134,7 +128,7 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
                     rel="noopener noreferrer"
                     className="text-xs text-indigo-400/70 hover:text-indigo-300 underline break-all block leading-relaxed"
                   >
-                    🔗 {urlLabel}
+                    🔗 {url}
                   </a>
                   <a
                     href={url}
@@ -181,7 +175,6 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
             <h3 className="font-medium text-slate-200">📷 おすすめWebカメラ</h3>
             {webcamResults.map((item) => {
               const url = getProductUrl(item);
-              const urlLabel = getUrlLabel(item);
               return (
                 <div key={item.id} className="card p-4 space-y-3">
                   <div className="flex justify-between items-start">
@@ -208,7 +201,7 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
                       rel="noopener noreferrer"
                       className="text-xs text-indigo-400/70 hover:text-indigo-300 underline break-all block leading-relaxed"
                     >
-                      🔗 {urlLabel}
+                      🔗 {url}
                     </a>
                     <a
                       href={url}
