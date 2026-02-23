@@ -4,6 +4,11 @@ import { useState } from "react";
 import type { PeripheralFlowConfig, PeripheralItem } from "@/types/peripheral";
 import { PERIPHERAL_CATALOG } from "@/data/peripherals";
 
+function getProductUrl(item: PeripheralItem): string {
+  if (item.url) return item.url;
+  return `https://www.amazon.co.jp/s?k=${encodeURIComponent(item.name)}`;
+}
+
 interface PeripheralViewProps {
   flow: PeripheralFlowConfig;
 }
@@ -95,37 +100,48 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
             </p>
           </div>
         ) : (
-          results.map((item) => (
-            <div key={item.id} className="card p-4 space-y-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="font-bold text-slate-200">{item.name}</p>
-                  <p className="text-xs text-slate-500">{item.brand}</p>
-                </div>
-                <p className="text-indigo-400 font-bold text-lg">
-                  ¥{item.price.toLocaleString()}
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                {Object.entries(item.specs).map(([label, value]) => (
-                  <div key={label} className="p-2 rounded-lg bg-slate-800/50">
-                    <p className="text-slate-500">{label}</p>
-                    <p className="text-slate-300">{value}</p>
+          results.map((item) => {
+            const url = getProductUrl(item);
+            return (
+              <div key={item.id} className="card p-4 space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <p className="font-bold text-slate-200">{item.name}</p>
+                    <p className="text-xs text-slate-500">{item.brand}</p>
                   </div>
-                ))}
+                  <p className="text-indigo-400 font-bold text-lg">
+                    ¥{item.price.toLocaleString()}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  {Object.entries(item.specs).map(([label, value]) => (
+                    <div key={label} className="p-2 rounded-lg bg-slate-800/50">
+                      <p className="text-slate-500">{label}</p>
+                      <p className="text-slate-300">{value}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="space-y-1.5">
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-indigo-400/70 hover:text-indigo-300 underline break-all block leading-relaxed"
+                  >
+                    {url}
+                  </a>
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary block text-center py-2 text-sm"
+                  >
+                    詳細を見る →
+                  </a>
+                </div>
               </div>
-              {item.url && (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary block text-center py-2 text-sm"
-                >
-                  詳細を見る →
-                </a>
-              )}
-            </div>
-          ))
+            );
+          })
         )}
 
         {/* Webcam upsell (monitor flow only) */}
@@ -157,27 +173,48 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
         {webcamResults.length > 0 && (
           <div className="space-y-3 animate-fade-in">
             <h3 className="font-medium text-slate-200">📷 おすすめWebカメラ</h3>
-            {webcamResults.map((item) => (
-              <div key={item.id} className="card p-4 space-y-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-bold text-slate-200">{item.name}</p>
-                    <p className="text-xs text-slate-500">{item.brand}</p>
-                  </div>
-                  <p className="text-indigo-400 font-bold text-lg">
-                    ¥{item.price.toLocaleString()}
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {Object.entries(item.specs).map(([label, value]) => (
-                    <div key={label} className="p-2 rounded-lg bg-slate-800/50">
-                      <p className="text-slate-500">{label}</p>
-                      <p className="text-slate-300">{value}</p>
+            {webcamResults.map((item) => {
+              const url = getProductUrl(item);
+              return (
+                <div key={item.id} className="card p-4 space-y-3">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="font-bold text-slate-200">{item.name}</p>
+                      <p className="text-xs text-slate-500">{item.brand}</p>
                     </div>
-                  ))}
+                    <p className="text-indigo-400 font-bold text-lg">
+                      ¥{item.price.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {Object.entries(item.specs).map(([label, value]) => (
+                      <div key={label} className="p-2 rounded-lg bg-slate-800/50">
+                        <p className="text-slate-500">{label}</p>
+                        <p className="text-slate-300">{value}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-1.5">
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-indigo-400/70 hover:text-indigo-300 underline break-all block leading-relaxed"
+                    >
+                      {url}
+                    </a>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-primary block text-center py-2 text-sm"
+                    >
+                      詳細を見る →
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

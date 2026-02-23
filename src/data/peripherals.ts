@@ -17,7 +17,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 39800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "4K (3840x2160)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "USB-C / HDMI" },
-    tags: ["4k", "usb-c", "office", "design"],
+    tags: ["4k", "usb-c", "office", "design", "ips"],
   },
   {
     id: "mon-2",
@@ -27,7 +27,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 44800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "WQHD (2560x1440)", パネル: "Nano IPS", リフレッシュレート: "165Hz", 接続: "HDMI / DisplayPort" },
-    tags: ["gaming", "high-refresh", "wqhd"],
+    tags: ["gaming", "high-refresh", "wqhd", "ips"],
   },
   {
     id: "mon-3",
@@ -37,7 +37,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 16800,
     url: null,
     specs: { サイズ: "23.8インチ", 解像度: "FHD (1920x1080)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "HDMI / VGA / DisplayPort" },
-    tags: ["budget", "office", "fhd"],
+    tags: ["budget", "office", "fhd", "ips"],
   },
   {
     id: "mon-4",
@@ -47,7 +47,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 42800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "WQHD (2560x1440)", パネル: "IPS", リフレッシュレート: "75Hz", 接続: "HDMI / DisplayPort / USB-C" },
-    tags: ["design", "color-accurate", "wqhd"],
+    tags: ["design", "color-accurate", "wqhd", "ips"],
   },
   {
     id: "mon-5",
@@ -57,7 +57,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 59800,
     url: null,
     specs: { サイズ: "34インチ", 解像度: "UWQHD (3440x1440)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "USB-C / HDMI" },
-    tags: ["ultrawide", "usb-c", "office", "programming"],
+    tags: ["ultrawide", "usb-c", "office", "programming", "ips"],
   },
 
   // ── Keyboard ─────────────────────────────────────────────────────────────
@@ -68,8 +68,8 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     brand: "Logicool",
     price: 16800,
     url: null,
-    specs: { 接続: "Bluetooth / USB", キー配列: "JIS", タイプ: "パンタグラフ", バックライト: "あり" },
-    tags: ["wireless", "office", "quiet"],
+    specs: { 接続: "Bluetooth / USB", キー配列: "JIS フルサイズ", タイプ: "パンタグラフ", バックライト: "あり" },
+    tags: ["wireless", "office", "quiet", "fullsize", "backlight"],
   },
   {
     id: "kb-2",
@@ -78,8 +78,8 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     brand: "東プレ",
     price: 33000,
     url: null,
-    specs: { 接続: "Bluetooth / USB", キー配列: "JIS", タイプ: "静電容量無接点", 荷重: "45g" },
-    tags: ["premium", "programming", "quiet"],
+    specs: { 接続: "Bluetooth / USB", キー配列: "JIS テンキーレス", タイプ: "静電容量無接点", 荷重: "45g" },
+    tags: ["premium", "programming", "quiet", "wireless", "tkl"],
   },
   {
     id: "kb-3",
@@ -89,7 +89,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 22800,
     url: null,
     specs: { 接続: "USB有線", キー配列: "JIS 75%", タイプ: "メカニカル (Orange)", バックライト: "RGB" },
-    tags: ["gaming", "mechanical", "rgb"],
+    tags: ["gaming", "mechanical", "rgb", "wired", "compact"],
   },
   {
     id: "kb-4",
@@ -98,7 +98,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     brand: "Logicool",
     price: 3980,
     url: null,
-    specs: { 接続: "Bluetooth", キー配列: "JIS", タイプ: "メンブレン", バックライト: "なし" },
+    specs: { 接続: "Bluetooth", キー配列: "JIS コンパクト", タイプ: "メンブレン", バックライト: "なし" },
     tags: ["budget", "wireless", "compact"],
   },
   {
@@ -108,8 +108,8 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     brand: "Keychron",
     price: 14800,
     url: null,
-    specs: { 接続: "Bluetooth / USB-C", キー配列: "JIS TKL", タイプ: "メカニカル (Gateron)", バックライト: "RGB" },
-    tags: ["mechanical", "wireless", "programming"],
+    specs: { 接続: "Bluetooth / USB-C", キー配列: "JIS テンキーレス", タイプ: "メカニカル (Gateron)", バックライト: "RGB" },
+    tags: ["mechanical", "wireless", "programming", "tkl", "rgb"],
   },
 
   // ── Mouse ────────────────────────────────────────────────────────────────
@@ -131,7 +131,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 11800,
     url: null,
     specs: { 接続: "USB有線", センサー: "30000 DPI", 重量: "59g", ボタン: "5" },
-    tags: ["gaming", "lightweight", "wired"],
+    tags: ["gaming", "lightweight", "wired", "high-dpi"],
   },
   {
     id: "ms-3",
@@ -141,7 +141,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 18800,
     url: null,
     specs: { 接続: "LIGHTSPEED ワイヤレス", センサー: "32000 DPI", 重量: "60g", バッテリー: "最大95時間" },
-    tags: ["gaming", "wireless", "lightweight"],
+    tags: ["gaming", "wireless", "lightweight", "high-dpi"],
   },
   {
     id: "ms-4",
@@ -193,7 +193,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 28800,
     url: null,
     specs: { タイプ: "オンイヤー", 接続: "Bluetooth / USB-C", ノイズキャンセリング: "あり", マイク: "ブームマイク", バッテリー: "最大16時間" },
-    tags: ["wireless", "meeting", "anc", "office"],
+    tags: ["wireless", "meeting", "anc", "office", "boom-mic"],
   },
   {
     id: "hs-4",
@@ -271,12 +271,51 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "resolution",
+      label: "希望の解像度は？",
+      options: [
+        { id: "fhd", label: "FHD (1920x1080)", desc: "コスパ重視" },
+        { id: "wqhd", label: "WQHD (2560x1440)", desc: "バランス型" },
+        { id: "4k", label: "4K (3840x2160)", desc: "高精細" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "size",
       label: "画面サイズの好みは？",
       options: [
-        { id: "24", label: '24インチ前後', desc: "省スペース" },
-        { id: "27", label: '27インチ前後', desc: "バランス型" },
-        { id: "32+", label: '32インチ以上・ウルトラワイド', desc: "広い作業領域" },
+        { id: "24", label: "24インチ前後", desc: "省スペース" },
+        { id: "27", label: "27インチ前後", desc: "バランス型" },
+        { id: "32+", label: "32インチ以上・ウルトラワイド", desc: "広い作業領域" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
+      id: "refreshRate",
+      label: "リフレッシュレートの希望は？",
+      options: [
+        { id: "standard", label: "60Hz（標準）", desc: "オフィス・映像編集向き" },
+        { id: "high", label: "120Hz以上", desc: "ゲーム・滑らか表示" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
+      id: "panel",
+      label: "パネルの種類は？",
+      options: [
+        { id: "ips", label: "IPS", desc: "色再現◎・広視野角" },
+        { id: "va", label: "VA", desc: "コントラスト◎" },
+        { id: "oled", label: "OLED", desc: "有機EL・黒が深い" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
+      id: "connectivity",
+      label: "重視する接続端子は？",
+      options: [
+        { id: "usb-c", label: "USB-C", desc: "ケーブル1本で映像+給電", icon: "🔌" },
+        { id: "hdmi", label: "HDMI", desc: "汎用性が高い" },
+        { id: "dp", label: "DisplayPort", desc: "高リフレッシュ対応" },
         { id: "any", label: "こだわらない" },
       ],
     },
@@ -293,20 +332,58 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
   scoreFn: (item, answers) => {
     let score = 0;
     const purpose = answers["purpose"]?.[0];
+    const resolution = answers["resolution"]?.[0];
     const size = answers["size"]?.[0];
+    const refreshRate = answers["refreshRate"]?.[0];
+    const panel = answers["panel"]?.[0];
+    const connectivity = answers["connectivity"]?.[0];
     const budget = answers["budget"]?.[0];
 
+    // Purpose (+30 base, +20 bonus)
     if (purpose && item.tags.includes(purpose)) score += 30;
     if (purpose === "gaming" && item.tags.includes("high-refresh")) score += 20;
     if (purpose === "design" && item.tags.includes("color-accurate")) score += 20;
     if (purpose === "programming" && item.tags.includes("ultrawide")) score += 15;
 
+    // Resolution (+15)
+    if (resolution && resolution !== "any") {
+      if (resolution === "4k" && item.tags.includes("4k")) score += 15;
+      if (resolution === "wqhd" && (item.tags.includes("wqhd") || item.tags.includes("ultrawide"))) score += 15;
+      if (resolution === "fhd" && item.tags.includes("fhd")) score += 15;
+    }
+
+    // Size (+15)
     const sizeVal = item.specs["サイズ"] ?? "";
     const sizeNum = parseFloat(sizeVal);
     if (size === "24" && sizeNum >= 23 && sizeNum < 26) score += 15;
     if (size === "27" && sizeNum >= 26 && sizeNum < 30) score += 15;
     if (size === "32+" && sizeNum >= 30) score += 15;
 
+    // Refresh rate (+15)
+    if (refreshRate && refreshRate !== "any") {
+      const rrSpec = item.specs["リフレッシュレート"] ?? "";
+      const rrNum = parseInt(rrSpec);
+      if (refreshRate === "high" && rrNum >= 120) score += 15;
+      if (refreshRate === "standard" && rrNum <= 75) score += 10;
+    }
+
+    // Panel (+10)
+    if (panel && panel !== "any") {
+      const panelSpec = (item.specs["パネル"] ?? "").toLowerCase();
+      if (panel === "ips" && panelSpec.includes("ips")) score += 10;
+      if (panel === "va" && panelSpec.includes("va")) score += 10;
+      if (panel === "oled" && panelSpec.includes("oled")) score += 10;
+    }
+
+    // Connectivity (+10)
+    if (connectivity && connectivity !== "any") {
+      const connSpec = item.specs["接続"] ?? "";
+      if (connectivity === "usb-c" && connSpec.includes("USB-C")) score += 10;
+      if (connectivity === "hdmi" && connSpec.includes("HDMI")) score += 10;
+      if (connectivity === "dp" && connSpec.includes("DisplayPort")) score += 10;
+    }
+
+    // Budget (+15)
     if (budget === "low" && item.price <= 20000) score += 15;
     if (budget === "mid" && item.price > 20000 && item.price <= 40000) score += 15;
     if (budget === "high" && item.price > 40000) score += 15;
@@ -331,10 +408,20 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
-      id: "type",
-      label: "キータイプの好みは？",
+      id: "layout",
+      label: "キー配列・サイズは？",
       options: [
-        { id: "quiet", label: "静音・薄型", desc: "パンタグラフ等" },
+        { id: "full", label: "フルサイズ", desc: "テンキー付き" },
+        { id: "tkl", label: "テンキーレス", desc: "省スペース" },
+        { id: "compact", label: "コンパクト (60〜75%)", desc: "持ち運び向き" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
+      id: "type",
+      label: "打鍵感・静音性の好みは？",
+      options: [
+        { id: "quiet", label: "静音・薄型", desc: "パンタグラフ・静電容量等" },
         { id: "mechanical", label: "メカニカル", desc: "しっかりした打鍵感" },
         { id: "any", label: "こだわらない" },
       ],
@@ -346,6 +433,16 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
         { id: "wireless", label: "ワイヤレス", icon: "📡" },
         { id: "wired", label: "有線", icon: "🔌" },
         { id: "any", label: "どちらでも" },
+      ],
+    },
+    {
+      id: "backlight",
+      label: "バックライトは必要？",
+      options: [
+        { id: "rgb", label: "RGB（光らせたい）", desc: "ゲーミング向き" },
+        { id: "yes", label: "あり（白色等）", desc: "暗所作業に便利" },
+        { id: "no", label: "不要", desc: "シンプル" },
+        { id: "any", label: "こだわらない" },
       ],
     },
     {
@@ -361,16 +458,40 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
   scoreFn: (item, answers) => {
     let score = 0;
     const purpose = answers["purpose"]?.[0];
+    const layout = answers["layout"]?.[0];
     const type = answers["type"]?.[0];
     const conn = answers["connection"]?.[0];
+    const backlight = answers["backlight"]?.[0];
     const budget = answers["budget"]?.[0];
 
+    // Purpose (+25)
     if (purpose && item.tags.includes(purpose)) score += 25;
+
+    // Layout (+15)
+    if (layout && layout !== "any") {
+      const keyLayout = item.specs["キー配列"] ?? "";
+      if (layout === "full" && (keyLayout.includes("フルサイズ") || item.tags.includes("fullsize"))) score += 15;
+      if (layout === "tkl" && (keyLayout.includes("テンキーレス") || keyLayout.includes("TKL") || item.tags.includes("tkl"))) score += 15;
+      if (layout === "compact" && (keyLayout.includes("75%") || keyLayout.includes("60%") || keyLayout.includes("コンパクト") || item.tags.includes("compact"))) score += 15;
+    }
+
+    // Switch feel / type (+20)
     if (type === "quiet" && item.tags.includes("quiet")) score += 20;
     if (type === "mechanical" && item.tags.includes("mechanical")) score += 20;
-    if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
-    if (conn === "wired" && !item.tags.includes("wireless")) score += 15;
 
+    // Connection (+15)
+    if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
+    if (conn === "wired" && (item.tags.includes("wired") || !item.tags.includes("wireless"))) score += 15;
+
+    // Backlight (+10)
+    if (backlight && backlight !== "any") {
+      const blSpec = item.specs["バックライト"] ?? "";
+      if (backlight === "rgb" && (blSpec === "RGB" || item.tags.includes("rgb"))) score += 10;
+      if (backlight === "yes" && (blSpec === "あり" || blSpec === "RGB" || item.tags.includes("backlight") || item.tags.includes("rgb"))) score += 10;
+      if (backlight === "no" && (blSpec === "なし" || blSpec === "")) score += 10;
+    }
+
+    // Budget (+15)
     if (budget === "low" && item.price <= 5000) score += 15;
     if (budget === "mid" && item.price > 5000 && item.price <= 20000) score += 15;
     if (budget === "high" && item.price > 20000) score += 15;
@@ -394,6 +515,16 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "grip",
+      label: "持ち方・形状の好みは？",
+      options: [
+        { id: "palm", label: "かぶせ持ち（大型）", desc: "手のひら全体でホールド" },
+        { id: "claw", label: "つかみ持ち（中型）", desc: "指先で操作しやすい" },
+        { id: "fingertip", label: "つまみ持ち（小型・軽量）", desc: "素早い操作向き" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "connection",
       label: "接続方式は？",
       options: [
@@ -412,6 +543,15 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "dpi",
+      label: "センサー感度（DPI）の方向性は？",
+      options: [
+        { id: "high", label: "高DPI（ゲーム・精密操作）", desc: "10000DPI以上" },
+        { id: "standard", label: "標準（オフィス用途）", desc: "日常使いに十分" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "budget",
       label: "予算は？",
       options: [
@@ -424,18 +564,42 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
   scoreFn: (item, answers) => {
     let score = 0;
     const purpose = answers["purpose"]?.[0];
+    const grip = answers["grip"]?.[0];
     const conn = answers["connection"]?.[0];
     const weight = answers["weight"]?.[0];
+    const dpi = answers["dpi"]?.[0];
     const budget = answers["budget"]?.[0];
 
+    // Purpose (+25)
     if (purpose && item.tags.includes(purpose)) score += 25;
+
+    // Grip preference (+10)
+    if (grip && grip !== "any") {
+      const weightVal = parseInt(item.specs["重量"] ?? "100");
+      if (grip === "palm" && item.tags.includes("ergonomic")) score += 10;
+      if (grip === "claw" && weightVal >= 60 && weightVal <= 110) score += 10;
+      if (grip === "fingertip" && weightVal < 80) score += 10;
+    }
+
+    // Connection (+15)
     if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
-    if (conn === "wired" && item.tags.includes("wired")) score += 15;
+    if (conn === "wired" && (item.tags.includes("wired") || !item.tags.includes("wireless"))) score += 15;
 
-    const weightVal = parseInt(item.specs["重量"] ?? "100");
-    if (weight === "lightweight" && weightVal < 80) score += 20;
-    if (weight === "normal" && weightVal >= 80) score += 15;
+    // Weight (+15)
+    if (weight && weight !== "any") {
+      const weightVal = parseInt(item.specs["重量"] ?? "100");
+      if (weight === "lightweight" && weightVal < 80) score += 15;
+      if (weight === "normal" && weightVal >= 80) score += 10;
+    }
 
+    // DPI (+10)
+    if (dpi && dpi !== "any") {
+      const dpiNum = parseInt(item.specs["センサー"] ?? "0");
+      if (dpi === "high" && (dpiNum >= 10000 || item.tags.includes("high-dpi"))) score += 10;
+      if (dpi === "standard" && dpiNum > 0 && dpiNum < 10000) score += 10;
+    }
+
+    // Budget (+15)
     if (budget === "low" && item.price <= 5000) score += 15;
     if (budget === "mid" && item.price > 5000 && item.price <= 15000) score += 15;
     if (budget === "high" && item.price > 15000) score += 15;
@@ -460,12 +624,30 @@ export const HEADSET_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "fit",
+      label: "装着タイプの好みは？",
+      options: [
+        { id: "over-ear", label: "オーバーイヤー", desc: "耳を覆う・遮音性◎" },
+        { id: "on-ear", label: "オンイヤー", desc: "軽量・コンパクト" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "anc",
       label: "ノイズキャンセリングは必要？",
       options: [
         { id: "yes", label: "必要", desc: "外部ノイズを遮断" },
         { id: "no", label: "不要", desc: "パッシブでOK" },
         { id: "any", label: "どちらでも" },
+      ],
+    },
+    {
+      id: "mic",
+      label: "マイク品質の優先度は？",
+      options: [
+        { id: "high", label: "高品質マイク重視", desc: "会議・配信用" },
+        { id: "standard", label: "標準でOK", desc: "通常利用" },
+        { id: "any", label: "こだわらない" },
       ],
     },
     {
@@ -490,16 +672,38 @@ export const HEADSET_FLOW: PeripheralFlowConfig = {
   scoreFn: (item, answers) => {
     let score = 0;
     const purpose = answers["purpose"]?.[0];
+    const fit = answers["fit"]?.[0];
     const anc = answers["anc"]?.[0];
+    const mic = answers["mic"]?.[0];
     const conn = answers["connection"]?.[0];
     const budget = answers["budget"]?.[0];
 
+    // Purpose (+25)
     if (purpose && item.tags.includes(purpose)) score += 25;
+
+    // Fit type (+10)
+    if (fit && fit !== "any") {
+      const typeSpec = item.specs["タイプ"] ?? "";
+      if (fit === "over-ear" && typeSpec.includes("オーバーイヤー")) score += 10;
+      if (fit === "on-ear" && typeSpec.includes("オンイヤー")) score += 10;
+    }
+
+    // ANC (+20)
     if (anc === "yes" && item.tags.includes("anc")) score += 20;
     if (anc === "no" && !item.tags.includes("anc")) score += 10;
-    if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
-    if (conn === "wired" && item.tags.includes("wired")) score += 15;
 
+    // Mic quality (+10)
+    if (mic && mic !== "any") {
+      const micSpec = item.specs["マイク"] ?? "";
+      if (mic === "high" && (micSpec.includes("ブーム") || micSpec.includes("着脱") || item.tags.includes("boom-mic"))) score += 10;
+      if (mic === "standard") score += 5;
+    }
+
+    // Connection (+15)
+    if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
+    if (conn === "wired" && (item.tags.includes("wired") || !item.tags.includes("wireless"))) score += 15;
+
+    // Budget (+15)
     if (budget === "low" && item.price <= 10000) score += 15;
     if (budget === "mid" && item.price > 10000 && item.price <= 30000) score += 15;
     if (budget === "high" && item.price > 30000) score += 15;
