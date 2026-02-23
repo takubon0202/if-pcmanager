@@ -57,7 +57,10 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
   };
 
   const recommend = () => {
-    const items = PERIPHERAL_CATALOG.filter((i) => i.category === flow.category);
+    let items = PERIPHERAL_CATALOG.filter((i) => i.category === flow.category);
+    if (flow.filterFn) {
+      items = items.filter((item) => flow.filterFn!(item, answers));
+    }
     const scored = items
       .map((item) => ({ item, score: flow.scoreFn(item, answers) }))
       .sort((a, b) => b.score - a.score)
@@ -94,7 +97,7 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
         {results.length === 0 ? (
           <div className="card p-8 text-center">
             <p className="text-slate-400">
-              条件に合う商品が見つかりませんでした。
+              条件に一致する商品はありません。
               <br />
               条件を変えてお試しください。
             </p>
@@ -144,8 +147,8 @@ export function PeripheralView({ flow }: PeripheralViewProps) {
           })
         )}
 
-        {/* Webcam upsell (monitor flow only) */}
-        {flow.webcamUpsell && !webcamPrompt && (
+        {/* Webcam upsell (monitor flow only, shown only when results exist) */}
+        {flow.webcamUpsell && results.length > 0 && !webcamPrompt && (
           <div className="card p-5 space-y-3 border-indigo-500/20">
             <p className="font-medium text-slate-200">
               📷 Webカメラも追加で見ますか？

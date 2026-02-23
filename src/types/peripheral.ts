@@ -30,5 +30,6 @@ export interface PeripheralFlowConfig {
   subtitle: string;
   questions: PeripheralQuestion[];
   scoreFn: (item: PeripheralItem, answers: Record<string, string[]>) => number;
+  filterFn?: (item: PeripheralItem, answers: Record<string, string[]>) => boolean;
   webcamUpsell?: boolean;
 }

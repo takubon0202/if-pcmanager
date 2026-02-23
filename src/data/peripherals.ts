@@ -259,6 +259,68 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
   icon: "🖥",
   subtitle: "あなたにぴったりのモニターを見つけます",
   webcamUpsell: true,
+  filterFn: (item, answers) => {
+    const resolution = answers["resolution"]?.[0];
+    const size = answers["size"]?.[0];
+    const refreshRate = answers["refreshRate"]?.[0];
+    const panel = answers["panel"]?.[0];
+    const connectivity = answers["connectivity"]?.[0];
+    const ergonomics = answers["ergonomics"]?.[0];
+    const budget = answers["budget"]?.[0];
+
+    // Resolution: strict match when specified
+    if (resolution && resolution !== "any") {
+      if (resolution === "4k" && !item.tags.includes("4k")) return false;
+      if (resolution === "wqhd" && !item.tags.includes("wqhd") && !item.tags.includes("ultrawide")) return false;
+      if (resolution === "fhd" && !item.tags.includes("fhd")) return false;
+    }
+
+    // Size: strict band when specified
+    if (size && size !== "any") {
+      const sizeVal = item.specs["サイズ"] ?? "";
+      const sizeNum = parseFloat(sizeVal);
+      if (size === "24" && (sizeNum < 23 || sizeNum >= 26)) return false;
+      if (size === "27" && (sizeNum < 26 || sizeNum >= 30)) return false;
+      if (size === "32+" && sizeNum < 30) return false;
+    }
+
+    // Refresh rate: strict match when specified
+    if (refreshRate && refreshRate !== "any") {
+      const rrSpec = item.specs["リフレッシュレート"] ?? "";
+      const rrNum = parseInt(rrSpec);
+      if (refreshRate === "high" && rrNum < 120) return false;
+      if (refreshRate === "standard" && rrNum > 75) return false;
+    }
+
+    // Panel: strict match when specified
+    if (panel && panel !== "any") {
+      const panelSpec = (item.specs["パネル"] ?? "").toLowerCase();
+      if (panel === "ips" && !panelSpec.includes("ips")) return false;
+      if (panel === "va" && !panelSpec.includes("va")) return false;
+      if (panel === "oled" && !panelSpec.includes("oled")) return false;
+    }
+
+    // Connectivity: strict match when specified
+    if (connectivity && connectivity !== "any") {
+      const connSpec = item.specs["接続"] ?? "";
+      if (connectivity === "usb-c" && !connSpec.includes("USB-C")) return false;
+      if (connectivity === "hdmi" && !connSpec.includes("HDMI")) return false;
+      if (connectivity === "dp" && !connSpec.includes("DisplayPort")) return false;
+    }
+
+    // Ergonomics: strict match when specified
+    if (ergonomics && ergonomics !== "any") {
+      if (ergonomics === "adjustable" && !item.tags.includes("adjustable-stand")) return false;
+      if (ergonomics === "vesa" && !item.tags.includes("vesa")) return false;
+    }
+
+    // Budget: strict match
+    if (budget === "low" && item.price > 20000) return false;
+    if (budget === "mid" && (item.price <= 20000 || item.price > 40000)) return false;
+    if (budget === "high" && item.price <= 40000) return false;
+
+    return true;
+  },
   questions: [
     {
       id: "purpose",
