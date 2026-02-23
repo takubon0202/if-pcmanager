@@ -17,7 +17,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 39800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "4K (3840x2160)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "USB-C / HDMI" },
-    tags: ["4k", "usb-c", "office", "design", "ips"],
+    tags: ["4k", "usb-c", "office", "design", "ips", "adjustable-stand", "vesa"],
   },
   {
     id: "mon-2",
@@ -27,7 +27,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 44800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "WQHD (2560x1440)", パネル: "Nano IPS", リフレッシュレート: "165Hz", 接続: "HDMI / DisplayPort" },
-    tags: ["gaming", "high-refresh", "wqhd", "ips"],
+    tags: ["gaming", "high-refresh", "wqhd", "ips", "adjustable-stand", "vesa"],
   },
   {
     id: "mon-3",
@@ -37,7 +37,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 16800,
     url: null,
     specs: { サイズ: "23.8インチ", 解像度: "FHD (1920x1080)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "HDMI / VGA / DisplayPort" },
-    tags: ["budget", "office", "fhd", "ips"],
+    tags: ["budget", "office", "fhd", "ips", "vesa"],
   },
   {
     id: "mon-4",
@@ -47,7 +47,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 42800,
     url: null,
     specs: { サイズ: "27インチ", 解像度: "WQHD (2560x1440)", パネル: "IPS", リフレッシュレート: "75Hz", 接続: "HDMI / DisplayPort / USB-C" },
-    tags: ["design", "color-accurate", "wqhd", "ips"],
+    tags: ["design", "color-accurate", "wqhd", "ips", "adjustable-stand", "vesa"],
   },
   {
     id: "mon-5",
@@ -57,7 +57,7 @@ export const PERIPHERAL_CATALOG: PeripheralItem[] = [
     price: 59800,
     url: null,
     specs: { サイズ: "34インチ", 解像度: "UWQHD (3440x1440)", パネル: "IPS", リフレッシュレート: "60Hz", 接続: "USB-C / HDMI" },
-    tags: ["ultrawide", "usb-c", "office", "programming", "ips"],
+    tags: ["ultrawide", "usb-c", "office", "programming", "ips", "vesa"],
   },
 
   // ── Keyboard ─────────────────────────────────────────────────────────────
@@ -320,6 +320,15 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "ergonomics",
+      label: "スタンド調整・設置方法の希望は？",
+      options: [
+        { id: "adjustable", label: "高さ・角度調整あり", desc: "長時間作業に最適" },
+        { id: "vesa", label: "VESA対応（モニターアーム）", desc: "デスクを広く使える" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "budget",
       label: "予算は？",
       options: [
@@ -337,6 +346,7 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
     const refreshRate = answers["refreshRate"]?.[0];
     const panel = answers["panel"]?.[0];
     const connectivity = answers["connectivity"]?.[0];
+    const ergonomics = answers["ergonomics"]?.[0];
     const budget = answers["budget"]?.[0];
 
     // Purpose (+30 base, +20 bonus)
@@ -381,6 +391,12 @@ export const MONITOR_FLOW: PeripheralFlowConfig = {
       if (connectivity === "usb-c" && connSpec.includes("USB-C")) score += 10;
       if (connectivity === "hdmi" && connSpec.includes("HDMI")) score += 10;
       if (connectivity === "dp" && connSpec.includes("DisplayPort")) score += 10;
+    }
+
+    // Ergonomics (+10)
+    if (ergonomics && ergonomics !== "any") {
+      if (ergonomics === "adjustable" && item.tags.includes("adjustable-stand")) score += 10;
+      if (ergonomics === "vesa" && item.tags.includes("vesa")) score += 10;
     }
 
     // Budget (+15)
@@ -446,6 +462,16 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "os",
+      label: "使用するOS・環境は？",
+      options: [
+        { id: "windows", label: "Windows", icon: "🪟" },
+        { id: "mac", label: "Mac", icon: "🍎" },
+        { id: "multi", label: "複数OS切替", desc: "マルチペアリング対応が便利" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "budget",
       label: "予算は？",
       options: [
@@ -462,6 +488,7 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
     const type = answers["type"]?.[0];
     const conn = answers["connection"]?.[0];
     const backlight = answers["backlight"]?.[0];
+    const os = answers["os"]?.[0];
     const budget = answers["budget"]?.[0];
 
     // Purpose (+25)
@@ -489,6 +516,15 @@ export const KEYBOARD_FLOW: PeripheralFlowConfig = {
       if (backlight === "rgb" && (blSpec === "RGB" || item.tags.includes("rgb"))) score += 10;
       if (backlight === "yes" && (blSpec === "あり" || blSpec === "RGB" || item.tags.includes("backlight") || item.tags.includes("rgb"))) score += 10;
       if (backlight === "no" && (blSpec === "なし" || blSpec === "")) score += 10;
+    }
+
+    // OS / multi-device (+10)
+    if (os && os !== "any") {
+      const connSpec = item.specs["接続"] ?? "";
+      const hasBluetooth = connSpec.includes("Bluetooth");
+      if (os === "mac" && item.tags.includes("mac")) score += 10;
+      if (os === "multi" && hasBluetooth && item.tags.includes("wireless")) score += 10;
+      if (os === "windows") score += 5; // most keyboards work with Windows
     }
 
     // Budget (+15)
@@ -552,6 +588,16 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "features",
+      label: "重視する追加機能は？",
+      options: [
+        { id: "ergonomic", label: "エルゴノミクス設計", desc: "手首の負担を軽減" },
+        { id: "sidebuttons", label: "サイドボタン・多ボタン", desc: "作業効率アップ" },
+        { id: "long-battery", label: "長時間バッテリー", desc: "充電頻度を減らしたい" },
+        { id: "any", label: "こだわらない" },
+      ],
+    },
+    {
       id: "budget",
       label: "予算は？",
       options: [
@@ -568,6 +614,7 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
     const conn = answers["connection"]?.[0];
     const weight = answers["weight"]?.[0];
     const dpi = answers["dpi"]?.[0];
+    const features = answers["features"]?.[0];
     const budget = answers["budget"]?.[0];
 
     // Purpose (+25)
@@ -597,6 +644,20 @@ export const MOUSE_FLOW: PeripheralFlowConfig = {
       const dpiNum = parseInt(item.specs["センサー"] ?? "0");
       if (dpi === "high" && (dpiNum >= 10000 || item.tags.includes("high-dpi"))) score += 10;
       if (dpi === "standard" && dpiNum > 0 && dpiNum < 10000) score += 10;
+    }
+
+    // Features (+10)
+    if (features && features !== "any") {
+      if (features === "ergonomic" && item.tags.includes("ergonomic")) score += 10;
+      if (features === "sidebuttons") {
+        const btnNum = parseInt(item.specs["ボタン"] ?? "3");
+        if (btnNum >= 5) score += 10;
+      }
+      if (features === "long-battery") {
+        const battSpec = item.specs["バッテリー"] ?? "";
+        const battNum = parseInt(battSpec);
+        if (battNum >= 70 || battSpec.includes("ヶ月")) score += 10;
+      }
     }
 
     // Budget (+15)
@@ -660,6 +721,15 @@ export const HEADSET_FLOW: PeripheralFlowConfig = {
       ],
     },
     {
+      id: "battery",
+      label: "バッテリー持ちの重視度は？",
+      options: [
+        { id: "long", label: "長時間（20時間以上）", desc: "出張・外出先でも安心" },
+        { id: "normal", label: "標準で十分", desc: "自宅メイン利用" },
+        { id: "any", label: "こだわらない（有線含む）" },
+      ],
+    },
+    {
       id: "budget",
       label: "予算は？",
       options: [
@@ -676,6 +746,7 @@ export const HEADSET_FLOW: PeripheralFlowConfig = {
     const anc = answers["anc"]?.[0];
     const mic = answers["mic"]?.[0];
     const conn = answers["connection"]?.[0];
+    const battery = answers["battery"]?.[0];
     const budget = answers["budget"]?.[0];
 
     // Purpose (+25)
@@ -702,6 +773,15 @@ export const HEADSET_FLOW: PeripheralFlowConfig = {
     // Connection (+15)
     if (conn === "wireless" && item.tags.includes("wireless")) score += 15;
     if (conn === "wired" && (item.tags.includes("wired") || !item.tags.includes("wireless"))) score += 15;
+
+    // Battery life (+10)
+    if (battery && battery !== "any") {
+      const battSpec = item.specs["バッテリー"] ?? "";
+      const battNum = parseInt(battSpec.replace(/[^0-9]/g, ""));
+      if (battery === "long" && battNum >= 20) score += 10;
+      if (battery === "long" && item.tags.includes("long-battery")) score += 5;
+      if (battery === "normal" && battNum > 0) score += 5;
+    }
 
     // Budget (+15)
     if (budget === "low" && item.price <= 10000) score += 15;
