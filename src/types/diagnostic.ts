@@ -60,6 +60,59 @@ export interface UsageRating {
   comment: string;
 }
 
+export interface ComponentScore {
+  score: number; // 0-100
+  label: string;
+  detail: string;
+}
+
+export interface ComponentScores {
+  cpu: ComponentScore;
+  memory: ComponentScore;
+  storage: ComponentScore;
+  gpu: ComponentScore;
+  bottleneck: "cpu" | "memory" | "storage" | "gpu" | null;
+}
+
+export interface SoftwareComparison {
+  id: string;
+  name: string;
+  icon: string;
+  category: string;
+  verdict: "快適" | "動作可能" | "ギリギリ" | "スペック不足";
+  matchPercentage: number; // 0-100
+  limitingFactor: string | null;
+}
+
+export interface BenchmarkResult {
+  cpuScore: number;
+  renderScore: number;
+  memoryScore: number;
+  overallScore: number;
+  details: {
+    mathOpsPerSecond: number;
+    canvasFps: number;
+    arrayAllocTime: number;
+  };
+}
+
+export interface CourseCheckItem {
+  name: string;
+  icon: string;
+  passed: boolean;
+  detail: string;
+}
+
+export interface CourseCompatibility {
+  id: string;
+  label: string;
+  icon: string;
+  verdict: "対応可能" | "条件付きで対応" | "スペック不足";
+  score: number; // 0-100
+  checks: CourseCheckItem[];
+  summary: string;
+}
+
 export interface DiagnosticReport {
   overallScore: number; // 0-100
   overallVerdict: "まだまだ現役" | "そろそろ買い替え検討" | "買い替え推奨";
@@ -68,6 +121,10 @@ export interface DiagnosticReport {
   usageRatings: UsageRating[];
   advice: string[];
   upgradeOptions: string[];
+  componentScores: ComponentScores;
+  softwareComparisons: SoftwareComparison[];
+  benchmarkResult?: BenchmarkResult;
+  courseCompatibility: CourseCompatibility[];
 }
 
 export interface EstimatedSpecs {

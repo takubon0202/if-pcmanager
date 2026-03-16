@@ -4,8 +4,14 @@ import type {
   EstimatedSpecs,
   UsageRating,
   UsageCategory,
+  ComponentScores,
+  SoftwareComparison,
+  BenchmarkResult,
+  CourseCompatibility,
+  CourseCheckItem,
 } from "@/types/diagnostic";
 import { estimateSpecs, cpuNameToScore } from "@/data/pc-models";
+import { SOFTWARE_REQUIREMENTS } from "@/data/software-requirements";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -62,15 +68,12 @@ function rateUsage(
 
   const req = requirements[category];
 
-  // CPUスコア
   const cpuRatio = Math.min(specs.cpuScore / req.minCpu, 1.5);
   score += cpuRatio * 35;
 
-  // メモリ
   const memRatio = Math.min(specs.memoryGB / req.minMemory, 1.5);
   score += memRatio * 25;
 
-  // GPU
   if (req.needsGpu) {
     const hasGpu =
       specs.gpu !== "" &&
@@ -82,11 +85,9 @@ function rateUsage(
     score += 20;
   }
 
-  // 経年劣化
   const agePenalty = Math.min(ageYears * 3, 20);
   score -= agePenalty;
 
-  // ストレージ
   if (specs.storageType === "SSD") {
     score += 10;
   } else if (specs.storageType === "HDD") {
@@ -126,7 +127,6 @@ function generateAdvice(
   const advice: string[] = [];
   const upgradeOptions: string[] = [];
 
-  // 経年
   if (ageYears >= 7) {
     advice.push(
       `購入から約${ageYears}年経過。ハードウェアの寿命を考えると買い替えを検討してください`
@@ -141,7 +141,6 @@ function generateAdvice(
     );
   }
 
-  // メモリ
   if (specs.memoryGB <= 4) {
     advice.push("メモリ4GB以下は現在の用途では厳しい場合が多いです");
     upgradeOptions.push("メモリ増設（8GB以上推奨）");
@@ -150,7 +149,6 @@ function generateAdvice(
     upgradeOptions.push("メモリ16GBへの増設を検討");
   }
 
-  // ストレージ
   if (specs.storageType === "HDD") {
     advice.push("HDDは起動やアプリの読み込みが遅い原因になります");
     upgradeOptions.push("SSDへの換装（体感速度が大幅改善）");
@@ -160,7 +158,6 @@ function generateAdvice(
     upgradeOptions.push("大容量ストレージへの換装 or 外付けSSD");
   }
 
-  // Issues
   if (issues.includes("slow")) {
     if (specs.storageType === "HDD") {
       advice.push("動作の遅さはHDDが原因の可能性大。SSD換装で劇的に改善します");
@@ -185,7 +182,6 @@ function generateAdvice(
     advice.push("起動の遅さはHDDが主原因。SSDに換装すれば起動時間が劇的に短縮します");
   }
 
-  // 用途別の厳しい判定があれば
   const toughUsages = usageRatings.filter((r) => r.verdict === "厳しい");
   if (toughUsages.length > 0) {
     const names = toughUsages.map((r) => r.label).join("、");
@@ -197,7 +193,354 @@ function generateAdvice(
   return { advice, upgradeOptions };
 }
 
-export function generateReport(input: UserPcInput): DiagnosticReport {
+/* ── コンポーネント別スコア ── */
+
+function gpuScore(gpuName: string): number {
+  if (!gpuName || gpuName === "内蔵" || gpuName === "") return 20;
+  const g = gpuName.toLowerCase();
+  if (g.includes("rtx 50")) return 95;
+  if (g.includes("rtx 40")) return 85;
+  if (g.includes("rtx 30")) return 72;
+  if (g.includes("rtx 20")) return 58;
+  if (g.includes("gtx 16")) return 48;
+  if (g.includes("gtx 10")) return 38;
+  if (g.includes("radeon rx 7")) return 78;
+  if (g.includes("radeon rx 6")) return 65;
+  if (g.includes("m5")) return 70;
+  if (g.includes("m4 max")) return 75;
+  if (g.includes("m4 pro")) return 65;
+  if (g.includes("m4")) return 55;
+  if (g.includes("m3 max")) return 68;
+  if (g.includes("m3 pro")) return 58;
+  if (g.includes("m3")) return 48;
+  if (g.includes("m2")) return 42;
+  if (g.includes("m1")) return 38;
+  if (g.includes("iris") || g.includes("intel")) return 22;
+  if (g.startsWith("内蔵")) return 25;
+  return 30;
+}
+
+function memoryToScore(memoryGB: number): number {
+  if (memoryGB >= 64) return 100;
+  if (memoryGB >= 32) return 85;
+  if (memoryGB >= 24) return 78;
+  if (memoryGB >= 16) return 68;
+  if (memoryGB >= 8) return 45;
+  if (memoryGB >= 4) return 25;
+  return 10;
+}
+
+function storageScore(type: string, sizeGB: number): number {
+  let base = type === "SSD" ? 60 : type === "HDD" ? 20 : 40;
+  if (sizeGB >= 2048) base += 30;
+  else if (sizeGB >= 1024) base += 25;
+  else if (sizeGB >= 512) base += 18;
+  else if (sizeGB >= 256) base += 10;
+  else base += 5;
+  return Math.min(100, base);
+}
+
+export function calculateComponentScores(
+  specs: EstimatedSpecs,
+  benchmarkResult?: BenchmarkResult
+): ComponentScores {
+  let cpuS = specs.cpuScore;
+  if (benchmarkResult) {
+    cpuS = Math.round(cpuS * 0.6 + benchmarkResult.cpuScore * 0.4);
+  }
+
+  const memS = memoryToScore(specs.memoryGB);
+  const stoS = storageScore(specs.storageType, specs.storageGB);
+
+  let gpuS = gpuScore(specs.gpu);
+  if (benchmarkResult) {
+    gpuS = Math.round(gpuS * 0.6 + benchmarkResult.renderScore * 0.4);
+  }
+
+  const scores = { cpu: cpuS, memory: memS, storage: stoS, gpu: gpuS };
+  const min = Math.min(cpuS, memS, stoS, gpuS);
+  let bottleneck: ComponentScores["bottleneck"] = null;
+  if (min < 50) {
+    if (cpuS === min) bottleneck = "cpu";
+    else if (memS === min) bottleneck = "memory";
+    else if (stoS === min) bottleneck = "storage";
+    else bottleneck = "gpu";
+  }
+
+  return {
+    cpu: { score: scores.cpu, label: "CPU", detail: specs.cpu },
+    memory: {
+      score: scores.memory,
+      label: "メモリ",
+      detail: `${specs.memoryGB}GB`,
+    },
+    storage: {
+      score: scores.storage,
+      label: "ストレージ",
+      detail: `${specs.storageType} ${specs.storageGB >= 1024 ? `${specs.storageGB / 1024}TB` : `${specs.storageGB}GB`}`,
+    },
+    gpu: { score: scores.gpu, label: "GPU", detail: specs.gpu || "内蔵" },
+    bottleneck,
+  };
+}
+
+/* ── ソフトウェア比較 ── */
+
+function getGpuLevel(gpuName: string): number {
+  const g = gpuName.toLowerCase();
+  if (g.includes("rtx 40") || g.includes("rtx 50") || g.includes("radeon rx 7")) return 4;
+  if (g.includes("rtx 30") || g.includes("rtx 20") || g.includes("radeon rx 6") || g.includes("m4 max") || g.includes("m3 max")) return 3;
+  if (g.includes("gtx 16") || g.includes("m4 pro") || g.includes("m3 pro") || g.includes("m4") || g.includes("m3")) return 2;
+  if (g.includes("gtx") || g.includes("m2") || g.includes("m1")) return 1.5;
+  if (g.includes("iris") || g.includes("intel uhd") || g.startsWith("内蔵")) return 1;
+  if (!gpuName || gpuName === "内蔵" || gpuName === "") return 0.5;
+  return 1;
+}
+
+const GPU_LEVEL_MAP: Record<string, number> = {
+  none: 0,
+  integrated: 1,
+  entry: 2,
+  mid: 3,
+  high: 4,
+};
+
+export function compareSoftwareRequirements(
+  specs: EstimatedSpecs
+): SoftwareComparison[] {
+  const userGpuLevel = getGpuLevel(specs.gpu);
+
+  return SOFTWARE_REQUIREMENTS.map((sw) => {
+    const rec = sw.recommended;
+    const requiredGpuLevel = GPU_LEVEL_MAP[rec.gpuLevel] ?? 0;
+
+    const cpuRatio = Math.min(specs.cpuScore / Math.max(rec.cpuScore, 1), 1);
+    const memRatio = Math.min(specs.memoryGB / Math.max(rec.memoryGB, 1), 1);
+    const gpuRatio = rec.needsGpu
+      ? Math.min(userGpuLevel / Math.max(requiredGpuLevel, 0.5), 1)
+      : 1;
+
+    const matchPercentage = Math.round(
+      (cpuRatio * 0.4 + memRatio * 0.3 + gpuRatio * 0.3) * 100
+    );
+
+    let verdict: SoftwareComparison["verdict"];
+    if (matchPercentage >= 85) verdict = "快適";
+    else if (matchPercentage >= 65) verdict = "動作可能";
+    else if (matchPercentage >= 45) verdict = "ギリギリ";
+    else verdict = "スペック不足";
+
+    // Identify limiting factor
+    let limitingFactor: string | null = null;
+    const ratios = [
+      { name: "CPU", ratio: cpuRatio },
+      { name: "メモリ", ratio: memRatio },
+      { name: "GPU", ratio: gpuRatio },
+    ];
+    const weakest = ratios.reduce((a, b) => (a.ratio < b.ratio ? a : b));
+    if (weakest.ratio < 0.8) limitingFactor = weakest.name;
+
+    return {
+      id: sw.id,
+      name: sw.name,
+      icon: sw.icon,
+      category: sw.category,
+      verdict,
+      matchPercentage,
+      limitingFactor,
+    };
+  });
+}
+
+/* ── 講座対応判定 ── */
+
+function checkCourseCompatibility(
+  specs: EstimatedSpecs,
+  ageYears: number,
+): CourseCompatibility[] {
+  const results: CourseCompatibility[] = [];
+
+  // ── 1. 日常PC作業 ──
+  {
+    const checks: CourseCheckItem[] = [];
+    let passed = 0;
+
+    const cpuOk = specs.cpuScore >= 25;
+    checks.push({
+      name: "CPU性能",
+      icon: "🧠",
+      passed: cpuOk,
+      detail: cpuOk
+        ? `${specs.cpu}（十分な処理性能）`
+        : `${specs.cpu}（処理性能が不足気味）`,
+    });
+    if (cpuOk) passed++;
+
+    const memOk = specs.memoryGB >= 8;
+    checks.push({
+      name: "メモリ",
+      icon: "💾",
+      passed: memOk,
+      detail: memOk
+        ? `${specs.memoryGB}GB（8GB以上で問題なし）`
+        : `${specs.memoryGB}GB（8GB未満 — 動作が遅くなる場合があります）`,
+    });
+    if (memOk) passed++;
+
+    const ssdOk = specs.storageType !== "HDD";
+    checks.push({
+      name: "ストレージ",
+      icon: "💿",
+      passed: ssdOk,
+      detail: ssdOk
+        ? `${specs.storageType}（快適な読み書き速度）`
+        : "HDD（起動やアプリの動作が遅くなります）",
+    });
+    if (ssdOk) passed++;
+
+    const ageOk = ageYears <= 7;
+    checks.push({
+      name: "経年",
+      icon: "📅",
+      passed: ageOk,
+      detail: ageOk
+        ? `約${ageYears}年（まだ現役で使えます）`
+        : `約${ageYears}年（ハードウェアの寿命に注意）`,
+    });
+    if (ageOk) passed++;
+
+    const score = Math.round((passed / checks.length) * 100);
+    let verdict: CourseCompatibility["verdict"];
+    let summary: string;
+    if (passed === checks.length) {
+      verdict = "対応可能";
+      summary = "日常的なPC作業に問題なく対応できるスペックです";
+    } else if (passed >= checks.length - 1) {
+      verdict = "条件付きで対応";
+      summary = "基本的な作業は可能ですが、一部改善するとより快適になります";
+    } else {
+      verdict = "スペック不足";
+      summary = "日常的な作業でも動作が重くなる可能性があります。買い替えを検討してください";
+    }
+
+    results.push({
+      id: "daily",
+      label: "日常PC作業",
+      icon: "💻",
+      verdict,
+      score,
+      checks,
+      summary,
+    });
+  }
+
+  // ── 2. if(Business) AI講座 ──
+  {
+    const checks: CourseCheckItem[] = [];
+    let passed = 0;
+
+    // ブラウザ作業（Google Colab, ChatGPT, Claude Web）— 複数タブ前提
+    const browserOk = specs.cpuScore >= 30 && specs.memoryGB >= 8;
+    checks.push({
+      name: "ブラウザ作業（Colab・ChatGPT・Claude）",
+      icon: "🌐",
+      passed: browserOk,
+      detail: browserOk
+        ? "複数タブを開いてのブラウザ作業に対応できます"
+        : specs.memoryGB < 8
+          ? `メモリ${specs.memoryGB}GBでは複数タブで重くなります（8GB以上推奨）`
+          : "CPU性能が不足気味で、複数タブの同時作業が重くなる場合があります",
+    });
+    if (browserOk) passed++;
+
+    // Claude Code — ターミナル + Node.js + ブラウザ同時使用
+    const claudeCodeOk = specs.cpuScore >= 35 && specs.memoryGB >= 8;
+    checks.push({
+      name: "Claude Code（ターミナルAIエージェント）",
+      icon: "⚡",
+      passed: claudeCodeOk,
+      detail: claudeCodeOk
+        ? "Claude Codeの実行に十分なスペックです"
+        : specs.memoryGB < 8
+          ? `メモリ${specs.memoryGB}GBではClaude Code＋ブラウザの同時使用が困難です`
+          : "CPU性能が不足しており、Claude Codeの応答が遅くなる場合があります",
+    });
+    if (claudeCodeOk) passed++;
+
+    // Codex CLI — 同様にターミナル + ブラウザ
+    const codexOk = specs.cpuScore >= 35 && specs.memoryGB >= 8;
+    checks.push({
+      name: "Codex（OpenAI CLIエージェント）",
+      icon: "🤖",
+      passed: codexOk,
+      detail: codexOk
+        ? "Codex CLIの実行に十分なスペックです"
+        : specs.memoryGB < 8
+          ? `メモリ${specs.memoryGB}GBではCodex＋他ツールの同時使用が困難です`
+          : "CPU性能が不足しており、Codexの実行が遅くなる場合があります",
+    });
+    if (codexOk) passed++;
+
+    // SSD推奨 — 開発ツール全般
+    const ssdOk = specs.storageType !== "HDD";
+    checks.push({
+      name: "ストレージ速度（開発ツール全般）",
+      icon: "💿",
+      passed: ssdOk,
+      detail: ssdOk
+        ? "SSDで快適にツールを起動・操作できます"
+        : "HDDではツールの起動やファイル操作が遅くなります。SSD換装を強く推奨します",
+    });
+    if (ssdOk) passed++;
+
+    // メモリ16GB推奨チェック（必須ではないが推奨）
+    const mem16Ok = specs.memoryGB >= 16;
+    checks.push({
+      name: "メモリ余裕（ブラウザ＋CLI同時使用）",
+      icon: "📊",
+      passed: mem16Ok,
+      detail: mem16Ok
+        ? `${specs.memoryGB}GBあり、ブラウザ＋CLIツールの同時作業も余裕です`
+        : `${specs.memoryGB}GB — 動作しますが、16GB以上あると複数ツール同時使用が快適になります`,
+    });
+    if (mem16Ok) passed++;
+
+    const score = Math.round((passed / checks.length) * 100);
+    let verdict: CourseCompatibility["verdict"];
+    let summary: string;
+
+    if (passed === checks.length) {
+      verdict = "対応可能";
+      summary = "if(Business)のAI講座に必要なスペックを全て満たしています。安心して受講できます";
+    } else if (passed >= 3) {
+      verdict = "条件付きで対応";
+      const failedItems = checks.filter((c) => !c.passed).map((c) => c.name);
+      summary = `受講可能ですが、${failedItems.join("・")}に注意が必要です`;
+    } else {
+      verdict = "スペック不足";
+      summary = "講座で使用するツールを快適に動かすにはスペックが不足しています。PC買い替えを検討してください";
+    }
+
+    results.push({
+      id: "if-business-ai",
+      label: "if(Business) AI講座",
+      icon: "🎓",
+      verdict,
+      score,
+      checks,
+      summary,
+    });
+  }
+
+  return results;
+}
+
+/* ── レポート生成 ── */
+
+export function generateReport(
+  input: UserPcInput,
+  benchmarkResult?: BenchmarkResult
+): DiagnosticReport {
   const specs = resolveSpecs(input);
   const purchaseYear = input.purchaseYear || CURRENT_YEAR - 3;
   const ageYears = CURRENT_YEAR - purchaseYear;
@@ -212,7 +555,6 @@ export function generateReport(input: UserPcInput): DiagnosticReport {
     rateUsage("ai", "AI・機械学習", "🤖", specs, ageYears),
   ];
 
-  // 総合スコアはCPU、メモリ、経年を加味
   let overallScore = 0;
   overallScore += specs.cpuScore * 0.4;
   overallScore += Math.min((specs.memoryGB / 32) * 100, 100) * 0.25;
@@ -236,6 +578,10 @@ export function generateReport(input: UserPcInput): DiagnosticReport {
     usageRatings
   );
 
+  const componentScores = calculateComponentScores(specs, benchmarkResult);
+  const softwareComparisons = compareSoftwareRequirements(specs);
+  const courseCompatibility = checkCourseCompatibility(specs, ageYears);
+
   return {
     overallScore,
     overallVerdict,
@@ -244,5 +590,9 @@ export function generateReport(input: UserPcInput): DiagnosticReport {
     usageRatings,
     advice,
     upgradeOptions,
+    componentScores,
+    softwareComparisons,
+    benchmarkResult,
+    courseCompatibility,
   };
 }

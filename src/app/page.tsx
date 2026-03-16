@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { initLiff } from "@/lib/liff";
 import { ModeSelector } from "@/components/ModeSelector";
+import { DiagnosticHero } from "@/components/DiagnosticHero";
 import { DiagnosticView } from "@/components/DiagnosticView";
 import { LaptopView } from "@/components/LaptopView";
 import { CustomPCView } from "@/components/CustomPCView";
@@ -12,6 +13,7 @@ import type { Mode } from "@/types";
 
 export default function Home() {
   const [mode, setMode] = useState<Mode | null>(null);
+  const [diagMode, setDiagMode] = useState<"hybrid" | "manual">("hybrid");
   const [liffReady, setLiffReady] = useState(false);
   const [liffError, setLiffError] = useState<string | null>(null);
 
@@ -36,20 +38,35 @@ export default function Home() {
     );
   }
 
+  const handleStartDiagnosis = () => {
+    setDiagMode("hybrid");
+    setMode("diagnosis");
+  };
+
+  const handleManualDiagnosis = () => {
+    setDiagMode("manual");
+    setMode("diagnosis");
+  };
+
+  const handleBack = () => {
+    setMode(null);
+    setDiagMode("hybrid");
+  };
+
   return (
     <div className="min-h-screen">
       {/* ヘッダー */}
       <header className="sticky top-0 z-10 backdrop-blur-xl bg-slate-900/70 border-b border-indigo-500/10">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
           <button
-            onClick={() => setMode(null)}
+            onClick={handleBack}
             className="text-lg font-bold gradient-text"
           >
             ⚡ PC Manager
           </button>
           {mode && (
             <button
-              onClick={() => setMode(null)}
+              onClick={handleBack}
               className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
             >
               ← モード選択
@@ -73,11 +90,21 @@ export default function Home() {
                 あなたに最適なPC環境を見つけよう
               </p>
             </div>
-            <ModeSelector currentMode={mode} onSelectMode={setMode} />
+
+            {/* PC性能チェック — ヒーローカード */}
+            <DiagnosticHero
+              onStart={handleStartDiagnosis}
+              onManual={handleManualDiagnosis}
+            />
+
+            {/* その他のモード */}
+            <div className="mt-4">
+              <ModeSelector currentMode={mode} onSelectMode={setMode} />
+            </div>
           </>
         )}
 
-        {mode === "diagnosis" && <DiagnosticView />}
+        {mode === "diagnosis" && <DiagnosticView mode={diagMode} />}
         {mode === "laptop" && <LaptopView />}
         {mode === "custom-pc" && <CustomPCView />}
         {mode && mode in PERIPHERAL_FLOWS && (
