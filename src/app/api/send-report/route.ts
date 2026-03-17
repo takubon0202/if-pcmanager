@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { buildDiagnosticReportHtml, buildLaptopReportHtml } from "@/lib/report-email";
+import { buildDiagnosticReportHtml, buildLaptopReportHtml, buildDesktopReportHtml } from "@/lib/report-email";
 import type { DiagnosticReport } from "@/types/diagnostic";
-import type { LaptopRecommendation } from "@/types";
+import type { LaptopRecommendation, DesktopRecommendation } from "@/types";
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -28,7 +28,19 @@ interface LaptopPayload {
   };
 }
 
-type ReportPayload = DiagnosticPayload | LaptopPayload;
+interface DesktopPayload {
+  type: "desktop";
+  email: string;
+  desktops: DesktopRecommendation[];
+  conditions: {
+    purposes: string[];
+    budget: string;
+    formFactor: string;
+    priorities: string[];
+  };
+}
+
+type ReportPayload = DiagnosticPayload | LaptopPayload | DesktopPayload;
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,6 +59,9 @@ export async function POST(request: NextRequest) {
     } else if (body.type === "laptop") {
       html = buildLaptopReportHtml(body.laptops, body.conditions);
       subject = `💻 ノートPCおすすめレポート (${body.laptops.length}台) | if(塾)`;
+    } else if (body.type === "desktop") {
+      html = buildDesktopReportHtml(body.desktops, body.conditions);
+      subject = `🖥️ デスクトップPCおすすめレポート (${body.desktops.length}台) | if(塾)`;
     } else {
       return NextResponse.json({ error: "不明なレポートタイプ" }, { status: 400 });
     }

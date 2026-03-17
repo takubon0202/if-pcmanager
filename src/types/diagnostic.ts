@@ -25,6 +25,10 @@ export const MANUFACTURERS = [
   "Dynabook (東芝)",
   "Panasonic",
   "Microsoft",
+  "ドスパラ (GALLERIA)",
+  "パソコン工房 (LEVEL∞)",
+  "FRONTIER",
+  "サイコム",
   "その他",
 ] as const;
 

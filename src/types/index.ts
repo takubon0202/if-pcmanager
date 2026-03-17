@@ -1,7 +1,7 @@
 export type Mode =
   | "diagnosis"
   | "laptop"
-  | "bto"
+  | "desktop"
   | "custom-pc"
   | "monitor"
   | "keyboard"
@@ -32,11 +32,11 @@ export const MODES: ModeConfig[] = [
     enabled: true,
   },
   {
-    id: "bto",
-    label: "BTO",
+    id: "desktop",
+    label: "デスクトップPC",
     icon: "🖥️",
-    description: "BTOパソコンを提案",
-    enabled: false,
+    description: "最適なデスクトップPCを提案",
+    enabled: true,
   },
   {
     id: "custom-pc",
@@ -96,6 +96,25 @@ export interface LaptopRecommendation {
     gpu: string;
     battery: string;
     weight: string;
+  };
+  matchScore: number;
+  reasons: string[];
+}
+
+export interface DesktopRecommendation {
+  name: string;
+  brand: string;
+  price: number;
+  url: string | null;
+  modelNumber: string;
+  specs: {
+    cpu: string;
+    memory: string;
+    storage: string;
+    gpu: string;
+    psu: string;
+    formFactor: string;
+    motherboard: string;
   };
   matchScore: number;
   reasons: string[];

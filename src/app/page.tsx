@@ -7,6 +7,7 @@ import { DiagnosticHero } from "@/components/DiagnosticHero";
 import { DiagnosticView } from "@/components/DiagnosticView";
 import { LaptopView } from "@/components/LaptopView";
 import { CustomPCView } from "@/components/CustomPCView";
+import { DesktopView } from "@/components/DesktopView";
 import { PeripheralView } from "@/components/PeripheralView";
 import { PERIPHERAL_FLOWS } from "@/data/peripherals";
 import type { Mode } from "@/types";
@@ -106,6 +107,7 @@ export default function Home() {
 
         {mode === "diagnosis" && <DiagnosticView mode={diagMode} />}
         {mode === "laptop" && <LaptopView />}
+        {mode === "desktop" && <DesktopView />}
         {mode === "custom-pc" && <CustomPCView />}
         {mode && mode in PERIPHERAL_FLOWS && (
           <PeripheralView key={mode} flow={PERIPHERAL_FLOWS[mode]} />

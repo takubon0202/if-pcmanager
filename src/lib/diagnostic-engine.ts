@@ -198,24 +198,86 @@ function generateAdvice(
 function gpuScore(gpuName: string): number {
   if (!gpuName || gpuName === "内蔵" || gpuName === "") return 20;
   const g = gpuName.toLowerCase();
-  if (g.includes("rtx 50")) return 95;
-  if (g.includes("rtx 40")) return 85;
-  if (g.includes("rtx 30")) return 72;
+  // NVIDIA RTX 50 Series (Desktop)
+  if (g.includes("rtx 5090")) return 100;
+  if (g.includes("rtx 5080")) return 92;
+  if (g.includes("rtx 5070 ti")) return 88;
+  if (g.includes("rtx 5070")) return 85;
+  if (g.includes("rtx 5060 ti")) return 78;
+  if (g.includes("rtx 5060")) return 75;
+  if (g.includes("rtx 5050")) return 68;
+  // NVIDIA RTX 40 Series (Desktop)
+  if (g.includes("rtx 4090")) return 95;
+  if (g.includes("rtx 4080 super")) return 90;
+  if (g.includes("rtx 4080")) return 88;
+  if (g.includes("rtx 4070 ti super")) return 85;
+  if (g.includes("rtx 4070 ti")) return 82;
+  if (g.includes("rtx 4070 super")) return 80;
+  if (g.includes("rtx 4070")) return 78;
+  if (g.includes("rtx 4060 ti")) return 72;
+  if (g.includes("rtx 4060")) return 68;
+  // NVIDIA RTX 30 Series
+  if (g.includes("rtx 3090")) return 82;
+  if (g.includes("rtx 3080")) return 78;
+  if (g.includes("rtx 3070 ti")) return 75;
+  if (g.includes("rtx 3070")) return 72;
+  if (g.includes("rtx 3060 ti")) return 68;
+  if (g.includes("rtx 3060")) return 62;
+  if (g.includes("rtx 3050")) return 52;
+  // NVIDIA Older
   if (g.includes("rtx 20")) return 58;
+  if (g.includes("gtx 1660")) return 50;
+  if (g.includes("gtx 1650")) return 42;
   if (g.includes("gtx 16")) return 48;
+  if (g.includes("gtx 1080")) return 52;
+  if (g.includes("gtx 1070")) return 45;
   if (g.includes("gtx 10")) return 38;
-  if (g.includes("radeon rx 7")) return 78;
+  if (g.includes("gt 1030")) return 25;
+  // AMD Radeon RX 9000 Series
+  if (g.includes("rx 9070 xt")) return 85;
+  if (g.includes("rx 9070")) return 80;
+  // AMD Radeon RX 7000 Series
+  if (g.includes("rx 7900 xtx")) return 88;
+  if (g.includes("rx 7900 xt")) return 82;
+  if (g.includes("rx 7800 xt")) return 78;
+  if (g.includes("rx 7700 xt")) return 72;
+  if (g.includes("rx 7600")) return 62;
+  // AMD Radeon RX 6000 Series
   if (g.includes("radeon rx 6")) return 65;
-  if (g.includes("m5")) return 70;
+  // Intel Arc
+  if (g.includes("arc a770")) return 58;
+  if (g.includes("arc a750")) return 52;
+  if (g.includes("arc a580")) return 45;
+  // Fallback GPU series
+  if (g.includes("rtx 50")) return 80;
+  if (g.includes("rtx 40")) return 75;
+  if (g.includes("rtx 30")) return 65;
+  if (g.includes("radeon rx 7")) return 72;
+  // Apple Silicon
+  if (g.includes("m3 ultra") && (g.includes("80コア") || g.includes("80-core"))) return 92;
+  if (g.includes("m3 ultra")) return 88;
+  if (g.includes("m2 ultra")) return 82;
+  if (g.includes("m5 max")) return 85;
+  if (g.includes("m5 pro")) return 72;
+  if (g.includes("m5")) return 62;
+  if (g.includes("m4 max") && (g.includes("40コア") || g.includes("40-core"))) return 80;
   if (g.includes("m4 max")) return 75;
+  if (g.includes("m4 pro") && (g.includes("20コア") || g.includes("20-core"))) return 68;
   if (g.includes("m4 pro")) return 65;
   if (g.includes("m4")) return 55;
   if (g.includes("m3 max")) return 68;
   if (g.includes("m3 pro")) return 58;
   if (g.includes("m3")) return 48;
   if (g.includes("m2")) return 42;
+  if (g.includes("m1 ultra")) return 72;
+  if (g.includes("m1 max")) return 60;
   if (g.includes("m1")) return 38;
-  if (g.includes("iris") || g.includes("intel")) return 22;
+  if (g.includes("a18")) return 28;
+  // Integrated
+  if (g.includes("radeon 780m")) return 32;
+  if (g.includes("radeon 760m")) return 28;
+  if (g.includes("iris") || g.includes("intel uhd")) return 22;
+  if (g.includes("intel")) return 22;
   if (g.startsWith("内蔵")) return 25;
   return 30;
 }
