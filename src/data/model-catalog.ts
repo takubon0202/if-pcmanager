@@ -54,6 +54,53 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     // MacBook
     { name: "MacBook 12インチ (2017)", series: "MacBook", year: 2017 },
     { name: "MacBook 12インチ (2016)", series: "MacBook", year: 2016 },
+    // === 2026年3月発表 新製品 ===
+    // MacBook Neo (新カテゴリ)
+    { name: "MacBook Neo (13インチ, A18 Pro)", series: "MacBook Neo", year: 2026 },
+    // MacBook Air M5
+    { name: "MacBook Air M5 (13インチ)", series: "MacBook Air", year: 2026 },
+    { name: "MacBook Air M5 (15インチ)", series: "MacBook Air", year: 2026 },
+    // MacBook Pro M5 Pro / M5 Max
+    { name: "MacBook Pro M5 (14インチ)", series: "MacBook Pro", year: 2025 },
+    { name: "MacBook Pro M5 Pro (14インチ)", series: "MacBook Pro", year: 2026 },
+    { name: "MacBook Pro M5 Pro (16インチ)", series: "MacBook Pro", year: 2026 },
+    { name: "MacBook Pro M5 Max (14インチ)", series: "MacBook Pro", year: 2026 },
+    { name: "MacBook Pro M5 Max (16インチ)", series: "MacBook Pro", year: 2026 },
+    // === デスクトップPC ===
+    // iMac
+    { name: "iMac M4 (24インチ, 4ポート)", series: "iMac", year: 2024 },
+    { name: "iMac M4 (24インチ, 2ポート)", series: "iMac", year: 2024 },
+    { name: "iMac M3 (24インチ, 4ポート)", series: "iMac", year: 2023 },
+    { name: "iMac M3 (24インチ, 2ポート)", series: "iMac", year: 2023 },
+    { name: "iMac M1 (24インチ, 4ポート)", series: "iMac", year: 2021 },
+    { name: "iMac M1 (24インチ, 2ポート)", series: "iMac", year: 2021 },
+    { name: "iMac (Retina 5K, 27インチ, 2020)", series: "iMac", year: 2020 },
+    { name: "iMac (Retina 5K, 27インチ, 2019)", series: "iMac", year: 2019 },
+    { name: "iMac (Retina 4K, 21.5インチ, 2019)", series: "iMac", year: 2019 },
+    { name: "iMac (Retina 5K, 27インチ, 2017)", series: "iMac", year: 2017 },
+    { name: "iMac (Retina 4K, 21.5インチ, 2017)", series: "iMac", year: 2017 },
+    { name: "iMac (21.5インチ, 2017)", series: "iMac", year: 2017 },
+    // iMac Pro
+    { name: "iMac Pro 2017 (27インチ 5K, Xeon W)", series: "iMac Pro", year: 2017 },
+    // Mac mini
+    { name: "Mac mini M4 Pro (2024)", series: "Mac mini", year: 2024 },
+    { name: "Mac mini M4 (2024)", series: "Mac mini", year: 2024 },
+    { name: "Mac mini M2 Pro (2023)", series: "Mac mini", year: 2023 },
+    { name: "Mac mini M2 (2023)", series: "Mac mini", year: 2023 },
+    { name: "Mac mini M1 (2020)", series: "Mac mini", year: 2020 },
+    { name: "Mac mini 2018 (Intel)", series: "Mac mini", year: 2018 },
+    // Mac Studio
+    { name: "Mac Studio M4 Max (2025)", series: "Mac Studio", year: 2025 },
+    { name: "Mac Studio M3 Ultra (2025)", series: "Mac Studio", year: 2025 },
+    { name: "Mac Studio M2 Max (2023)", series: "Mac Studio", year: 2023 },
+    { name: "Mac Studio M2 Ultra (2023)", series: "Mac Studio", year: 2023 },
+    { name: "Mac Studio M1 Max (2022)", series: "Mac Studio", year: 2022 },
+    { name: "Mac Studio M1 Ultra (2022)", series: "Mac Studio", year: 2022 },
+    // Mac Pro
+    { name: "Mac Pro M2 Ultra (2023) タワー", series: "Mac Pro", year: 2023 },
+    { name: "Mac Pro M2 Ultra (2023) ラック", series: "Mac Pro", year: 2023 },
+    { name: "Mac Pro 2019 (Intel Xeon W) タワー", series: "Mac Pro", year: 2019 },
+    { name: "Mac Pro 2019 (Intel Xeon W) ラック", series: "Mac Pro", year: 2019 },
   ],
 
   // ===== Lenovo =====
@@ -116,7 +163,34 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "Yoga Slim 7 (14型)", series: "Yoga", year: 2020 },
     { name: "Yoga C740 (14型)", series: "Yoga", year: 2019 },
     { name: "Yoga C930", series: "Yoga", year: 2018 },
-    // LOQ / Legion
+    // === デスクトップPC ===
+    // ThinkCentre
+    { name: "ThinkCentre M75q Tiny Gen 5", series: "ThinkCentre", year: 2024 },
+    { name: "ThinkCentre M75s Small Gen 5", series: "ThinkCentre", year: 2024 },
+    { name: "ThinkCentre M70q Tiny Gen 5", series: "ThinkCentre", year: 2024 },
+    { name: "ThinkCentre neo 50q Gen 5", series: "ThinkCentre", year: 2024 },
+    { name: "ThinkCentre M70q Tiny Gen 4", series: "ThinkCentre", year: 2023 },
+    { name: "ThinkCentre M75q Tiny Gen 4", series: "ThinkCentre", year: 2023 },
+    { name: "ThinkCentre M70q Tiny Gen 3", series: "ThinkCentre", year: 2022 },
+    { name: "ThinkCentre M75s Gen 2", series: "ThinkCentre", year: 2021 },
+    { name: "ThinkCentre M75q Tiny Gen 2", series: "ThinkCentre", year: 2021 },
+    { name: "ThinkCentre M70q Tiny", series: "ThinkCentre", year: 2020 },
+    // IdeaCentre
+    { name: "IdeaCentre Tower (17L, 10)", series: "IdeaCentre", year: 2025 },
+    { name: "IdeaCentre Mini (1L, 10)", series: "IdeaCentre", year: 2025 },
+    { name: "IdeaCentre Tower (17L, 9)", series: "IdeaCentre", year: 2024 },
+    { name: "IdeaCentre Mini (1L, 9)", series: "IdeaCentre", year: 2024 },
+    { name: "IdeaCentre 5i Gen 8 (タワー)", series: "IdeaCentre", year: 2023 },
+    { name: "IdeaCentre Mini (1L, 8)", series: "IdeaCentre", year: 2023 },
+    { name: "IdeaCentre 5i Gen 7 (タワー)", series: "IdeaCentre", year: 2022 },
+    // Legion Tower
+    { name: "Legion Tower 7i (34L, 10)", series: "Legion Tower", year: 2025 },
+    { name: "Legion Tower 5i (28L, 10)", series: "Legion Tower", year: 2025 },
+    { name: "Legion Tower 5i Gen 9 (28L)", series: "Legion Tower", year: 2024 },
+    { name: "Legion Tower 5 Gen 8 (AMD)", series: "Legion Tower", year: 2023 },
+    { name: "Legion Tower 5i Gen 8 (Intel)", series: "Legion Tower", year: 2023 },
+    { name: "Legion Tower 5i Gen 7 (Intel)", series: "Legion Tower", year: 2022 },
+    // LOQ / Legion (ノートPC)
     { name: "LOQ 15IRX10", series: "LOQ / Legion", year: 2025 },
     { name: "LOQ 15IRX9", series: "LOQ / Legion", year: 2024 },
     { name: "LOQ 15AHP9", series: "LOQ / Legion", year: 2024 },
@@ -174,7 +248,29 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "EliteBook 840 G7", series: "EliteBook", year: 2020 },
     { name: "EliteBook 840 G6", series: "EliteBook", year: 2019 },
     { name: "EliteBook 840 G5", series: "EliteBook", year: 2018 },
-    // Victus / OMEN
+    // === デスクトップPC ===
+    // EliteDesk / ProDesk
+    { name: "EliteDesk 8 Mini G1a", series: "EliteDesk / ProDesk", year: 2024 },
+    { name: "Elite SFF 805 G9", series: "EliteDesk / ProDesk", year: 2024 },
+    { name: "ProDesk 405 SFF G9", series: "EliteDesk / ProDesk", year: 2023 },
+    { name: "EliteDesk 805 G8 Desktop Mini", series: "EliteDesk / ProDesk", year: 2022 },
+    { name: "EliteDesk 800 G8 SFF", series: "EliteDesk / ProDesk", year: 2021 },
+    { name: "EliteDesk 800 G6 SFF", series: "EliteDesk / ProDesk", year: 2020 },
+    { name: "ProDesk 400 G7 SFF", series: "EliteDesk / ProDesk", year: 2020 },
+    // Pavilion Desktop
+    { name: "Pavilion Desktop TP01 (2024)", series: "Pavilion Desktop", year: 2024 },
+    { name: "Pavilion Desktop TP01 (2023)", series: "Pavilion Desktop", year: 2023 },
+    { name: "Pavilion Desktop TP01 (2022)", series: "Pavilion Desktop", year: 2022 },
+    { name: "Pavilion Desktop TP01 (2021)", series: "Pavilion Desktop", year: 2021 },
+    // HP OmniDesk
+    { name: "OmniDesk AI (2025)", series: "HP OmniDesk", year: 2025 },
+    // OMEN Desktop
+    { name: "OMEN 35L Desktop (2025)", series: "OMEN Desktop", year: 2025 },
+    { name: "OMEN 45L Desktop (2024)", series: "OMEN Desktop", year: 2024 },
+    { name: "OMEN 40L Desktop (2023)", series: "OMEN Desktop", year: 2023 },
+    { name: "OMEN 25L Desktop (2022)", series: "OMEN Desktop", year: 2022 },
+    { name: "OMEN 25L Desktop (2021)", series: "OMEN Desktop", year: 2021 },
+    // Victus / OMEN (ノートPC)
     { name: "Victus 15 (RTX 5060)", series: "Victus / OMEN", year: 2025 },
     { name: "Victus 16 (RTX 4060)", series: "Victus / OMEN", year: 2024 },
     { name: "Victus 16 (RTX 4050)", series: "Victus / OMEN", year: 2023 },
@@ -224,7 +320,35 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "Latitude 5420 (2021)", series: "Latitude", year: 2021 },
     { name: "Latitude 5410 (2020)", series: "Latitude", year: 2020 },
     { name: "Latitude 5300 (2019)", series: "Latitude", year: 2019 },
-    // G / Alienware
+    // === デスクトップPC ===
+    // OptiPlex
+    { name: "OptiPlex 7020 SFF (2024)", series: "OptiPlex", year: 2024 },
+    { name: "OptiPlex 7020 Tower (2024)", series: "OptiPlex", year: 2024 },
+    { name: "OptiPlex 7020 Micro (2024)", series: "OptiPlex", year: 2024 },
+    { name: "OptiPlex 7010 SFF (2023)", series: "OptiPlex", year: 2023 },
+    { name: "OptiPlex 7010 Tower (2023)", series: "OptiPlex", year: 2023 },
+    { name: "OptiPlex 7010 Micro (2023)", series: "OptiPlex", year: 2023 },
+    { name: "OptiPlex 7000 SFF (2022)", series: "OptiPlex", year: 2022 },
+    { name: "OptiPlex 7000 Tower (2022)", series: "OptiPlex", year: 2022 },
+    { name: "OptiPlex 7090 SFF (2021)", series: "OptiPlex", year: 2021 },
+    { name: "OptiPlex 7080 SFF (2020)", series: "OptiPlex", year: 2020 },
+    { name: "OptiPlex 7070 SFF (2019)", series: "OptiPlex", year: 2019 },
+    { name: "OptiPlex 7060 SFF (2018)", series: "OptiPlex", year: 2018 },
+    // Inspiron Desktop
+    { name: "Inspiron Small Desktop (2024)", series: "Inspiron Desktop", year: 2024 },
+    { name: "Inspiron Desktop (2024)", series: "Inspiron Desktop", year: 2024 },
+    { name: "Inspiron Desktop (2023)", series: "Inspiron Desktop", year: 2023 },
+    { name: "Inspiron Desktop (2022)", series: "Inspiron Desktop", year: 2022 },
+    // XPS Desktop
+    { name: "XPS Desktop 8960 (2024)", series: "XPS Desktop", year: 2024 },
+    { name: "XPS Desktop 8950 (2023)", series: "XPS Desktop", year: 2023 },
+    { name: "XPS Desktop 8940 (2021)", series: "XPS Desktop", year: 2021 },
+    // Alienware Desktop
+    { name: "Alienware Aurora R16 (2024)", series: "Alienware Desktop", year: 2024 },
+    { name: "Alienware Aurora R15 (2023)", series: "Alienware Desktop", year: 2023 },
+    { name: "Alienware Aurora R14 (2022)", series: "Alienware Desktop", year: 2022 },
+    { name: "Alienware Aurora R13 (2021)", series: "Alienware Desktop", year: 2021 },
+    // G / Alienware (ノートPC)
     { name: "G16 7630 (2024)", series: "Dell G / Alienware", year: 2024 },
     { name: "G15 5530 (2023)", series: "Dell G / Alienware", year: 2023 },
     { name: "G15 5520 (2022)", series: "Dell G / Alienware", year: 2022 },
@@ -275,9 +399,30 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "TUF Gaming F15 (2022)", series: "TUF Gaming", year: 2022 },
     { name: "TUF Gaming F15 (2021)", series: "TUF Gaming", year: 2021 },
     { name: "TUF Gaming FX505 (2019)", series: "TUF Gaming", year: 2019 },
-    // ProArt
+    // ProArt (ノートPC)
     { name: "ProArt P16 H7606 (2025)", series: "ProArt", year: 2025 },
     { name: "ProArt Studiobook 16 OLED (2023)", series: "ProArt", year: 2023 },
+    // === デスクトップPC ===
+    // ROG デスクトップ
+    { name: "ROG Strix GT35 (2025)", series: "ROG デスクトップ", year: 2025 },
+    { name: "ROG Strix GA35 (2024)", series: "ROG デスクトップ", year: 2024 },
+    { name: "ROG Strix G16CH (2024)", series: "ROG デスクトップ", year: 2024 },
+    { name: "ROG Strix GT15 (2023)", series: "ROG デスクトップ", year: 2023 },
+    { name: "ROG Strix G10CE (2022)", series: "ROG デスクトップ", year: 2022 },
+    { name: "ROG Strix G15CK (2021)", series: "ROG デスクトップ", year: 2021 },
+    // TUF Gaming デスクトップ
+    { name: "TUF Gaming GT502 Desktop (2025)", series: "TUF Gaming デスクトップ", year: 2025 },
+    { name: "TUF Gaming GT501 Desktop (2024)", series: "TUF Gaming デスクトップ", year: 2024 },
+    { name: "TUF Gaming GT301 Desktop (2023)", series: "TUF Gaming デスクトップ", year: 2023 },
+    // ExpertCenter
+    { name: "ExpertCenter D9 SFF (2024)", series: "ExpertCenter", year: 2024 },
+    { name: "ExpertCenter D5 SFF (2024)", series: "ExpertCenter", year: 2024 },
+    { name: "ExpertCenter D7 Mini Tower (2023)", series: "ExpertCenter", year: 2023 },
+    { name: "ExpertCenter D5 Mini Tower (2022)", series: "ExpertCenter", year: 2022 },
+    // ASUS Mini PC
+    { name: "Mini PC PN65 (2024)", series: "ASUS Mini PC", year: 2024 },
+    { name: "Mini PC PN53 (2023)", series: "ASUS Mini PC", year: 2023 },
+    { name: "Mini PC PN52 (2022)", series: "ASUS Mini PC", year: 2022 },
   ],
 
   // ===== MSI =====
@@ -349,6 +494,28 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "DAIV Z6 (16型) 2023", series: "DAIV", year: 2023 },
     { name: "DAIV 5P (15.6型) 2021", series: "DAIV", year: 2021 },
     { name: "DAIV 4P (14型) 2020", series: "DAIV", year: 2020 },
+    // === デスクトップPC ===
+    // G-Tune デスクトップ
+    { name: "G-Tune DG-I5G60 (2026)", series: "G-Tune デスクトップ", year: 2026 },
+    { name: "G-Tune DG-A7G70 (2026)", series: "G-Tune デスクトップ", year: 2026 },
+    { name: "G-Tune DG-I7G70 (2026)", series: "G-Tune デスクトップ", year: 2026 },
+    { name: "G-Tune FZ-I7G80 (2026)", series: "G-Tune デスクトップ", year: 2026 },
+    { name: "G-Tune FZ-I7G70 (2026)", series: "G-Tune デスクトップ", year: 2026 },
+    { name: "G-Tune DG-I5G60 (2025)", series: "G-Tune デスクトップ", year: 2025 },
+    { name: "G-Tune DG-I7G60 (2025)", series: "G-Tune デスクトップ", year: 2025 },
+    { name: "G-Tune FZ-I7G70 (2024)", series: "G-Tune デスクトップ", year: 2024 },
+    { name: "G-Tune FZ-A9G90 (2024)", series: "G-Tune デスクトップ", year: 2024 },
+    { name: "G-Tune EN-Z (2023)", series: "G-Tune デスクトップ", year: 2023 },
+    { name: "G-Tune HM-B (2022)", series: "G-Tune デスクトップ", year: 2022 },
+    // DAIV デスクトップ
+    { name: "DAIV FW-A9G70 (2026)", series: "DAIV デスクトップ", year: 2026 },
+    { name: "DAIV Z7-I9G70 (2025)", series: "DAIV デスクトップ", year: 2025 },
+    { name: "DAIV Z7 (2024)", series: "DAIV デスクトップ", year: 2024 },
+    { name: "DAIV Z7 (2023)", series: "DAIV デスクトップ", year: 2023 },
+    // mouse デスクトップ
+    { name: "mouse DT5-G (2025)", series: "mouse デスクトップ", year: 2025 },
+    { name: "mouse DT5 (2024)", series: "mouse デスクトップ", year: 2024 },
+    { name: "mouse SL5 (2024)", series: "mouse デスクトップ", year: 2024 },
   ],
 
   // ===== 富士通 =====
@@ -475,6 +642,92 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "Surface Pro 4", series: "Surface Pro", year: 2016 },
     { name: "Surface Book 3 (13.5型)", series: "Surface Book", year: 2020 },
     { name: "Surface Book 2 (13.5型)", series: "Surface Book", year: 2017 },
+  ],
+
+  // ===== ドスパラ (GALLERIA) =====
+  "ドスパラ (GALLERIA)": [
+    // GALLERIA ゲーミングデスクトップ
+    { name: "GALLERIA XA7C-R50 (RTX 5090)", series: "GALLERIA デスクトップ", year: 2025 },
+    { name: "GALLERIA XA7C-R58 (RTX 5080)", series: "GALLERIA デスクトップ", year: 2025 },
+    { name: "GALLERIA XA7C-R57T (RTX 5070 Ti)", series: "GALLERIA デスクトップ", year: 2025 },
+    { name: "GALLERIA XA7C-R57 (RTX 5070)", series: "GALLERIA デスクトップ", year: 2025 },
+    { name: "GALLERIA XA5C-R56 (RTX 5060)", series: "GALLERIA デスクトップ", year: 2025 },
+    { name: "GALLERIA XA7C-R49 (RTX 4090)", series: "GALLERIA デスクトップ", year: 2024 },
+    { name: "GALLERIA XA7C-R48S (RTX 4080 SUPER)", series: "GALLERIA デスクトップ", year: 2024 },
+    { name: "GALLERIA XA7C-R47TS (RTX 4070 Ti SUPER)", series: "GALLERIA デスクトップ", year: 2024 },
+    { name: "GALLERIA XA7C-R47T (RTX 4070 Ti)", series: "GALLERIA デスクトップ", year: 2023 },
+    { name: "GALLERIA XA7C-R47 (RTX 4070)", series: "GALLERIA デスクトップ", year: 2023 },
+    { name: "GALLERIA XA7C-R46T (RTX 4060 Ti)", series: "GALLERIA デスクトップ", year: 2023 },
+    { name: "GALLERIA RM5C-R46 (RTX 4060)", series: "GALLERIA デスクトップ", year: 2023 },
+    { name: "GALLERIA XA7C-R37 (RTX 3070)", series: "GALLERIA デスクトップ", year: 2022 },
+    { name: "GALLERIA XA7C-R36 (RTX 3060)", series: "GALLERIA デスクトップ", year: 2021 },
+    { name: "GALLERIA XA7C-R36T (RTX 3060 Ti)", series: "GALLERIA デスクトップ", year: 2021 },
+    // Magnate 一般向け
+    { name: "Magnate IM (第14世代)", series: "Magnate", year: 2024 },
+    { name: "Magnate MH (第14世代)", series: "Magnate", year: 2024 },
+    { name: "Magnate MV (第13世代)", series: "Magnate", year: 2023 },
+    { name: "Magnate IM (第12世代)", series: "Magnate", year: 2022 },
+    // raytrek クリエイター
+    { name: "raytrek 4CXFi (RTX 4070)", series: "raytrek", year: 2024 },
+    { name: "raytrek 4CXVi (RTX 4060 Ti)", series: "raytrek", year: 2023 },
+    // GALLERIA ノートPC
+    { name: "GALLERIA XL7C-R46H (15.6型)", series: "GALLERIA ノートPC", year: 2024 },
+    { name: "GALLERIA XL7C-R36H (15.6型)", series: "GALLERIA ノートPC", year: 2023 },
+    { name: "GALLERIA XL7C-R36 (15.6型)", series: "GALLERIA ノートPC", year: 2022 },
+  ],
+
+  // ===== パソコン工房 (LEVEL∞) =====
+  "パソコン工房 (LEVEL∞)": [
+    // LEVEL∞ ゲーミングデスクトップ
+    { name: "LEVEL∞ R-Class (RTX 5090)", series: "LEVEL∞ デスクトップ", year: 2025 },
+    { name: "LEVEL∞ R-Class (RTX 5080)", series: "LEVEL∞ デスクトップ", year: 2025 },
+    { name: "LEVEL∞ R-Class (RTX 5070)", series: "LEVEL∞ デスクトップ", year: 2025 },
+    { name: "LEVEL∞ R-Class (RTX 5060)", series: "LEVEL∞ デスクトップ", year: 2025 },
+    { name: "LEVEL∞ R-Class (RTX 4090)", series: "LEVEL∞ デスクトップ", year: 2024 },
+    { name: "LEVEL∞ R-Class (RTX 4080 SUPER)", series: "LEVEL∞ デスクトップ", year: 2024 },
+    { name: "LEVEL∞ R-Class (RTX 4070 Ti SUPER)", series: "LEVEL∞ デスクトップ", year: 2024 },
+    { name: "LEVEL∞ R-Class (RTX 4070)", series: "LEVEL∞ デスクトップ", year: 2023 },
+    { name: "LEVEL∞ R-Class (RTX 4060 Ti)", series: "LEVEL∞ デスクトップ", year: 2023 },
+    { name: "LEVEL∞ R-Class (RTX 4060)", series: "LEVEL∞ デスクトップ", year: 2023 },
+    { name: "LEVEL∞ M-Class ミニタワー (RTX 4060)", series: "LEVEL∞ デスクトップ", year: 2023 },
+    { name: "LEVEL∞ R-Class (RTX 3060)", series: "LEVEL∞ デスクトップ", year: 2022 },
+    // SENSE∞ クリエイター
+    { name: "SENSE∞ F-Class ミドルタワー (RTX 4070 Ti SUPER)", series: "SENSE∞", year: 2025 },
+    { name: "SENSE∞ R-Class (RTX 4070)", series: "SENSE∞", year: 2024 },
+    // STYLE ビジネス
+    { name: "STYLE∞ M-Class ミニタワー", series: "STYLE∞", year: 2024 },
+    // ノートPC
+    { name: "LEVEL∞ 15FX (RTX 4060)", series: "LEVEL∞ ノートPC", year: 2024 },
+    { name: "LEVEL∞ 16HP (RTX 4060)", series: "LEVEL∞ ノートPC", year: 2023 },
+  ],
+
+  // ===== FRONTIER =====
+  FRONTIER: [
+    // ゲーミングデスクトップ
+    { name: "FRGAG-B860/WSA (RTX 5070 Ti)", series: "FRONTIER デスクトップ", year: 2025 },
+    { name: "FRGAG-B860/WS (RTX 5070)", series: "FRONTIER デスクトップ", year: 2025 },
+    { name: "FRGKB650/B (RTX 5060 Ti)", series: "FRONTIER デスクトップ", year: 2025 },
+    { name: "FRGAG-B760/WS (RTX 4070 Ti SUPER)", series: "FRONTIER デスクトップ", year: 2024 },
+    { name: "FRGAG-B760/WSA (RTX 4070 SUPER)", series: "FRONTIER デスクトップ", year: 2024 },
+    { name: "FRGXB760/WS (RTX 4060 Ti)", series: "FRONTIER デスクトップ", year: 2023 },
+    { name: "FRGXB660/WS (RTX 3060)", series: "FRONTIER デスクトップ", year: 2022 },
+  ],
+
+  // ===== サイコム =====
+  "サイコム": [
+    // G-Master ゲーミング
+    { name: "G-Master Velox II Intel Edition (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Velox II AMD Edition (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Spear X870E (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Spear Z890 (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Luminous Z790 (2024)", series: "G-Master", year: 2024 },
+    { name: "G-Master Spear Z790 (2024)", series: "G-Master", year: 2024 },
+    { name: "G-Master Spear X670E (2023)", series: "G-Master", year: 2023 },
+    // Aqua-Master 水冷
+    { name: "Aqua-Master X870E (2025)", series: "Aqua-Master", year: 2025 },
+    { name: "Aqua-Master Z890 (2025)", series: "Aqua-Master", year: 2025 },
+    { name: "Aqua-Master X670E (2024)", series: "Aqua-Master", year: 2024 },
+    { name: "Aqua-Master Z790 (2024)", series: "Aqua-Master", year: 2024 },
   ],
 
   // ===== その他 (手動入力推奨) =====
