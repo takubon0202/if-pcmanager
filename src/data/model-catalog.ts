@@ -165,16 +165,29 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "Yoga C930", series: "Yoga", year: 2018 },
     // === デスクトップPC ===
     // ThinkCentre
+    { name: "ThinkCentre M90q Tiny Gen 6", series: "ThinkCentre", year: 2025 },
+    { name: "ThinkCentre M70q Tiny Gen 6", series: "ThinkCentre", year: 2025 },
+    { name: "ThinkCentre Neo 50s Gen 6", series: "ThinkCentre", year: 2025 },
+    { name: "ThinkCentre M90q Tiny Gen 5", series: "ThinkCentre", year: 2024 },
     { name: "ThinkCentre M75q Tiny Gen 5", series: "ThinkCentre", year: 2024 },
     { name: "ThinkCentre M75s Small Gen 5", series: "ThinkCentre", year: 2024 },
     { name: "ThinkCentre M70q Tiny Gen 5", series: "ThinkCentre", year: 2024 },
     { name: "ThinkCentre neo 50q Gen 5", series: "ThinkCentre", year: 2024 },
+    { name: "ThinkCentre M90q Tiny Gen 4", series: "ThinkCentre", year: 2023 },
     { name: "ThinkCentre M70q Tiny Gen 4", series: "ThinkCentre", year: 2023 },
     { name: "ThinkCentre M75q Tiny Gen 4", series: "ThinkCentre", year: 2023 },
+    { name: "ThinkCentre Neo 50t Gen 4 (タワー)", series: "ThinkCentre", year: 2023 },
+    { name: "ThinkCentre Neo 50s Gen 4 (SFF)", series: "ThinkCentre", year: 2023 },
+    { name: "ThinkCentre M90q Tiny Gen 3", series: "ThinkCentre", year: 2022 },
     { name: "ThinkCentre M70q Tiny Gen 3", series: "ThinkCentre", year: 2022 },
+    { name: "ThinkCentre Neo 50s Gen 3 (SFF)", series: "ThinkCentre", year: 2022 },
+    { name: "ThinkCentre M90s (SFF)", series: "ThinkCentre", year: 2021 },
     { name: "ThinkCentre M75s Gen 2", series: "ThinkCentre", year: 2021 },
     { name: "ThinkCentre M75q Tiny Gen 2", series: "ThinkCentre", year: 2021 },
+    { name: "ThinkCentre M90t (タワー)", series: "ThinkCentre", year: 2020 },
     { name: "ThinkCentre M70q Tiny", series: "ThinkCentre", year: 2020 },
+    { name: "ThinkCentre M920q Tiny", series: "ThinkCentre", year: 2018 },
+    { name: "ThinkCentre M920s (SFF)", series: "ThinkCentre", year: 2018 },
     // IdeaCentre
     { name: "IdeaCentre Tower (17L, 10)", series: "IdeaCentre", year: 2025 },
     { name: "IdeaCentre Mini (1L, 10)", series: "IdeaCentre", year: 2025 },
@@ -262,14 +275,24 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
     { name: "Pavilion Desktop TP01 (2023)", series: "Pavilion Desktop", year: 2023 },
     { name: "Pavilion Desktop TP01 (2022)", series: "Pavilion Desktop", year: 2022 },
     { name: "Pavilion Desktop TP01 (2021)", series: "Pavilion Desktop", year: 2021 },
-    // HP OmniDesk
-    { name: "OmniDesk AI (2025)", series: "HP OmniDesk", year: 2025 },
+    // HP OmniDesk / OmniStudio
+    { name: "OmniDesk AI PC (2025)", series: "HP OmniDesk", year: 2025 },
+    { name: "OmniDesk Desktop PC (2025)", series: "HP OmniDesk", year: 2025 },
+    { name: "OmniDesk Slim PC (2025)", series: "HP OmniDesk", year: 2025 },
+    { name: "OmniStudio X 27 All-in-One (2025)", series: "HP OmniStudio", year: 2025 },
+    { name: "OmniStudio X 32 All-in-One (2025)", series: "HP OmniStudio", year: 2025 },
+    // HP Slim Desktop
+    { name: "HP Slim Desktop S01 (2022)", series: "HP Desktop", year: 2022 },
+    { name: "HP Slim Desktop S01 (2021)", series: "HP Desktop", year: 2021 },
     // OMEN Desktop
     { name: "OMEN 35L Desktop (2025)", series: "OMEN Desktop", year: 2025 },
+    { name: "OMEN Max 45L Desktop (2025)", series: "OMEN Desktop", year: 2025 },
     { name: "OMEN 45L Desktop (2024)", series: "OMEN Desktop", year: 2024 },
     { name: "OMEN 40L Desktop (2023)", series: "OMEN Desktop", year: 2023 },
     { name: "OMEN 25L Desktop (2022)", series: "OMEN Desktop", year: 2022 },
     { name: "OMEN 25L Desktop (2021)", series: "OMEN Desktop", year: 2021 },
+    { name: "OMEN 30L Desktop (2020)", series: "OMEN Desktop", year: 2020 },
+    { name: "OMEN Obelisk 875 (2019)", series: "OMEN Desktop", year: 2019 },
     // Victus / OMEN (ノートPC)
     { name: "Victus 15 (RTX 5060)", series: "Victus / OMEN", year: 2025 },
     { name: "Victus 16 (RTX 4060)", series: "Victus / OMEN", year: 2024 },
@@ -646,7 +669,12 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
 
   // ===== ドスパラ (GALLERIA) =====
   "ドスパラ (GALLERIA)": [
-    // GALLERIA ゲーミングデスクトップ
+    // GALLERIA 新シリーズ (2025年9月リニューアル)
+    { name: "GALLERIA Sシリーズ フラグシップ (RTX 5090)", series: "GALLERIA 新シリーズ", year: 2025 },
+    { name: "GALLERIA Xシリーズ スタンダード (RTX 5070)", series: "GALLERIA 新シリーズ", year: 2025 },
+    { name: "GALLERIA Fシリーズ ピラーレス (RTX 5070)", series: "GALLERIA 新シリーズ", year: 2025 },
+    { name: "GALLERIA Eシリーズ コンパクト", series: "GALLERIA 新シリーズ", year: 2026 },
+    // GALLERIA ゲーミングデスクトップ（従来型番）
     { name: "GALLERIA XA7C-R50 (RTX 5090)", series: "GALLERIA デスクトップ", year: 2025 },
     { name: "GALLERIA XA7C-R58 (RTX 5080)", series: "GALLERIA デスクトップ", year: 2025 },
     { name: "GALLERIA XA7C-R57T (RTX 5070 Ti)", series: "GALLERIA デスクトップ", year: 2025 },
@@ -716,18 +744,31 @@ export const MODEL_CATALOG: Record<string, ModelEntry[]> = {
   // ===== サイコム =====
   "サイコム": [
     // G-Master ゲーミング
+    { name: "G-Master Velox III AMD Edition (2025)", series: "G-Master", year: 2025 },
     { name: "G-Master Velox II Intel Edition (2025)", series: "G-Master", year: 2025 },
     { name: "G-Master Velox II AMD Edition (2025)", series: "G-Master", year: 2025 },
-    { name: "G-Master Spear X870E (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Velox Mini (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Spear X870A (2025)", series: "G-Master", year: 2025 },
     { name: "G-Master Spear Z890 (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Spear Mini B860 (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Luminous RGB Z890 (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Hydro Z890 (2025)", series: "G-Master", year: 2025 },
+    { name: "G-Master Hydro Extreme Z890 (2025)", series: "G-Master", year: 2025 },
     { name: "G-Master Luminous Z790 (2024)", series: "G-Master", year: 2024 },
     { name: "G-Master Spear Z790 (2024)", series: "G-Master", year: 2024 },
     { name: "G-Master Spear X670E (2023)", series: "G-Master", year: 2023 },
     // Aqua-Master 水冷
-    { name: "Aqua-Master X870E (2025)", series: "Aqua-Master", year: 2025 },
+    { name: "Aqua-Master X870A (2025)", series: "Aqua-Master", year: 2025 },
     { name: "Aqua-Master Z890 (2025)", series: "Aqua-Master", year: 2025 },
     { name: "Aqua-Master X670E (2024)", series: "Aqua-Master", year: 2024 },
     { name: "Aqua-Master Z790 (2024)", series: "Aqua-Master", year: 2024 },
+    // Silent-Master 静音
+    { name: "Silent-Master PRO Z890 (2025)", series: "Silent-Master", year: 2025 },
+    { name: "Silent-Master PRO Mini B860 (2025)", series: "Silent-Master", year: 2025 },
+    { name: "Silent-Master NEO Z890 (2025)", series: "Silent-Master", year: 2025 },
+    // Premium Line
+    { name: "Premium Line Z890FD (2025)", series: "Premium Line", year: 2025 },
+    { name: "Premium Line X870FD-A (2025)", series: "Premium Line", year: 2025 },
   ],
 
   // ===== その他 (手動入力推奨) =====
